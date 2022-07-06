@@ -1,0 +1,57 @@
+{
+    "blocks": [
+    {
+        "tag": "div",
+        "depth": 0,
+        "list": [
+        {
+            "text": "🎩你好，这是一个测试",
+            "className": [],
+            "inlineStyles":
+            {},
+            "tag": "span"
+        },
+        {
+            "text": "哈",
+            "className": ["ksuyd"],
+            "inlineStyles":
+            {},
+            "tag": "span"
+        },
+        {
+            "text": "",
+            "inlineStyles":
+            {},
+            "className": ["ksuyd"],
+            "data":
+            {
+                "src": "/src/logo.svg"
+            },
+            "tag": "img"
+        }]
+    },
+    {
+        "tag": "div",
+        "depth": 0,
+        "list": [
+        {
+            "text": "这是第二行。",
+            "className": [],
+            "inlineStyles":
+            {},
+            "tag": "span"
+        }]
+    },
+    {
+        "tag": "div",
+        "depth": 0,
+        "list": [
+        {
+            "text": "这是第3行。",
+            "className": [],
+            "inlineStyles":
+            {},
+            "tag": "span"
+        }]
+    }]
+}
