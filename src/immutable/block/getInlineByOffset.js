@@ -4,7 +4,7 @@ const sumFn = (list) => {
     return list.reduce((a, b) => a + b)
 }
 
-const getListSize = (li) => sumFn(li.map(el => el.size))
+const getListSize = (li) => sumFn(li.map(el => el.size2))
 
 
 

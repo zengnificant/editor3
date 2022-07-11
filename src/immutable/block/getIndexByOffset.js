@@ -7,10 +7,10 @@ const sumFn = (list) => {
 function getIndexByOffset(block, offset) {
     const list = block.getList()
 
-    const blockSize = block.size
+    const blockSize = block.size2
 
 
-    const numList = list.map(el => el.size)
+    const numList = list.map(el => el.size2)
     const ret = numList.map((v, i) => sumFn(numList.slice(0, i + 1)))
         .findIndex(v => v === offset)
 

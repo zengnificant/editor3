@@ -1,6 +1,7 @@
 import React, { Component, Fragment, createRef } from 'react'
 import ReactDOM from 'react-dom'
 import { Content, Selection, Meta, Block } from '@src/immutable/index.js'
+
 import { is, Map, fromJS, OrderedMap } from 'immutable'
 import EditorStyled from './EditorStyled.jsx'
 import EditorContent from './EditorContent.jsx'
@@ -32,17 +33,24 @@ import handleOnPaste from '@src/handlers/handleOnPaste.js'
 import handleOnKeyDown from '@src/handlers/handleOnKeyDown.js'
 
 
+
+
 const beautify = js => beautifyjs.js(JSON.stringify(js))
 
+
+
+
 // const content = doc2
-var content1 = convertFromRaw(raw)
 //const rawContent = beautify(convertToRaw(content))
 
-const html = `<a class="ha halal" style="color:red;font-size:20px" href="#">   t t <div>行内块<u>行内</u></div> 哈哈<span>t2</span></a><div>我很饿</div>我<li>我爱理<ul><li>爱理</ul><ul><li>爱理<ul><li>爱理<ul><li>爱理</li></ul><ol><li>爱理</li></ol><ol><li>爱理</li></ol></li></ul></li></ul></li>`
+const html = `<a class="ha halal" style="color:red;font-size:20px" href="#">   t t <div>行内块<b style="color:green;font-size:30px;">nice</b><u>行内</u></div> 哈哈<span>t2</span></a><div>我很饿</div>我<img src="/src/logo.svg"/><li>我爱理<ul><li>爱理</ul><ul><li>爱理<ul><li>爱理<ul><li>爱理</li></ul><ol><li>爱理</li></ol><ol><li>爱理</li></ol></li></ul></li></ul></li>`
 var content = convertFromHTML(html)
-// var content = convertFromRaw(raw)
+//var content1 = convertFromRaw(raw)
+//const rawContent = beautify(convertToRaw(content))
+//console.log(rawContent)
 
-// console.log(beautify(convertToRaw(content)))
+//console.log(Content.is(content, content1))
+
 
 const key = content.getFirstBlock().getKey()
 const selection = Selection.createByKey(key)

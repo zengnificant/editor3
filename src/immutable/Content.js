@@ -1,4 +1,4 @@
-import { OrderedMap } from 'immutable'
+import { OrderedMap, is } from 'immutable'
 
 import { StupidRecord } from '@nifi/helpers/StupidRecord.js'
 import Block from '@src/immutable/Block.js'
@@ -102,6 +102,23 @@ export default class Content extends StupidRecord(defaultRecord) {
     }
     static create(any) {
         return new Content(any)
+    }
+
+    static is(content, content2) {
+
+        function getBlocksOfSameKey(content) {
+            return content.getBlocks().map(block => block.set('key', 0))
+        }
+        let a = getBlocksOfSameKey(content),
+            b = getBlocksOfSameKey(content2)
+        a.map((block, index) => {
+
+            const blockB = b.get(index)
+            console.log(block, blockB, is(block, blockB))
+        })
+        return Content.isContent(content) &&
+            Content.isContent(content2) && is(getBlocksOfSameKey(content), getBlocksOfSameKey(content2))
+
     }
 
     static createFromText(text, delimiter = /\r\n?|\n/g) {

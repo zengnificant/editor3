@@ -4,6 +4,13 @@ import getInlineFromBlock from '@src/immutable/block/getInlineList.js'
 import { Meta } from '@src/immutable/index.js'
 
 
+function getComponentForDecorator(decorator) {
+    const { baseType, tag, inlineStyles, className: classNameList, ...data } = decorator
+    const Tag = tag
+    const className = classNameList.join(' ')
+    const style = inlineStyles
+    return props => <Tag className={className}  style={style} {...data} {...props}/>
+}
 
 
 const renderInline = (block) => {
@@ -18,31 +25,19 @@ const renderInline = (block) => {
 
 
         const firstEl = list.first()
-        const data = firstEl.getData().toJS()
-        const Tag = firstEl.getTag()
-        const className = firstEl.getClassName().join(' ')
-
-        const inlineStyles = firstEl.getInlineStyles().toJS()
+        const decorator = firstEl.getDecoratorTree().first().toJS()
+        const Inline = getComponentForDecorator(decorator)
 
 
-        if (Meta.isDimen(firstEl)) {
-            return className ?
-                <span key={getKey()} data-index={k} className={className} style={inlineStyles}>
-            <Tag {...data}  />
-            </span> :
-                <span key={getKey()} data-index={k}  style={inlineStyles}>
-            <Tag {...data}  />
-            </span>
+        if (decorator.baseType) {
+            const Inline2 = getComponentForDecorator(firstEl.getDecoratorTree().get(1).toJS())
+            return <Inline2 key={getKey()}  data-index={k}>
+            <Inline />
+            </Inline2>
         }
-
         const Text = list.map(e => e.getText()).join('')
-        return className ?
-            <Tag {...data} data-index={k} data-text={true}  key={getKey()} className={className} style={inlineStyles}>
-   {Text}
-   </Tag> :
-            <Tag {...data} data-index={k} data-text={true} key={getKey()}  style={inlineStyles}>
-   {Text}
-   </Tag>
+        return <Inline key={getKey()} data-index={k}>{Text}</Inline>
+
     }
 
 

@@ -1,50 +1,37 @@
-import { Map, OrderedSet, OrderedMap, fromJS } from 'immutable'
+import { Map, OrderedSet, OrderedMap, fromJS, List } from 'immutable'
 import { StupidRecord } from '@nifi/helpers/StupidRecord.js'
 import { isString, isObject } from '@nifi/utils/isTypeUtils.js'
-import DimenTag from '@src/immutable/DimenTag.js'
+import Decorator from './Decorator.js'
+import throwError from '@nifi/utils/throwError.js'
+const decoratorTree = List().push(new Decorator)
 const defaultRecord = {
     text: '',
-    inlineStyles: OrderedMap(),
-    className: OrderedSet(),
-    data: Map(),
-    tag: 'span'
+    decoratorTree
 };
 export default class Meta extends StupidRecord(defaultRecord) {
 
-    get size() {
-        if (Meta.isDimen(this)) {
-            return 1;
-        }
-        return this.getText().length
-    }
-    static isDimen(any) {
-        return Meta.isMeta(any) && DimenTag.has(any.get('tag'))
+    get size2() {
+        const a = this.getText().length;
+        const b = this.getDecoratorTree().first().size2
+        return a + b
     }
     static isMeta(any) {
         return any instanceof Meta
     }
-
-    isEmpty() {
-        return (!Meta.isDimen(this)) && this.getText() === ''
-
+    static create(any) {
+        return new Meta(any)
     }
-    static create(meta) {
-        if (Meta.isMeta(meta)) {
-            return meta
-        }
-        if (isString(meta)) {
-            return new Meta({ text: meta })
-        }
-        if (isObject(meta)) {
-            let inlineStyles = meta['inlineStyles'],
-                className = meta['className'],
-                data = meta['data']
-            meta['inlineStyles'] = OrderedMap(inlineStyles)
-            meta['className'] = Array.isArray(className) ? OrderedSet(className) : OrderedSet()
-            meta['data'] = Map(data)
 
+    static createFromText(text) {
+        if (!isString(text)) {
+            throwError(`${text}不是字符串`)
         }
-        return new Meta(meta)
+        const arr = text.match(/./usg)
+        if (arr && arr.length !== 1) {
+            throwError(`${text}不能是空字符串或者多个字符。`)
+        }
+
+        return Meta.create({ text })
     }
 
 }

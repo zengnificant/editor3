@@ -3,10 +3,10 @@ import { Map, List, OrderedMap, OrderedSet, Iterable, is } from 'immutable'
 import { StupidRecord } from '@nifi/helpers/StupidRecord.js'
 
 import createKey from '@nifi/helpers/createKey.js'
-import { Meta } from '@src/immutable/index.js'
+import Meta from './Meta.js'
 import { isString, isObject } from '@nifi/utils/isTypeUtils.js'
 const defaultRecord = {
-    key: null,
+    key: undefined,
     list: List(),
     tag: 'div',
     depth: 0,
@@ -17,6 +17,7 @@ const defaultRecord = {
 const createBlockKey = () => {
     return 'block-' + createKey()
 }
+
 
 export default class Block extends StupidRecord(defaultRecord) {
 
@@ -67,8 +68,9 @@ export default class Block extends StupidRecord(defaultRecord) {
 
         const textArr0 = text.match(/./usg)
         const textArr = textArr0 ? textArr0 : ['']
+        const list = List().concat(textArr.map(Meta.createFromText))
 
-        return Block.createFromArray(textArr)
+        return Block.create({ list })
     }
     getMetaByIndex(index) {
         return this.getList().get(index)
@@ -82,12 +84,12 @@ export default class Block extends StupidRecord(defaultRecord) {
         }
     }
 
-    get size() {
+    get size2() {
 
         if (this.getList().size === 0) {
             return 0;
         }
-        return this.getList().map(el => el.size).reduce((a, b) => a + b)
+        return this.getList().map(el => el.size2).reduce((a, b) => a + b)
     }
 
 

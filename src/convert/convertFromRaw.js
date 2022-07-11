@@ -1,36 +1,31 @@
 import { Meta } from '@src/immutable/index.js'
 import BlockMapBuilder from '@src/immutable/BlockMapBuilder.js'
-import { Block, Content } from '@src/immutable/index.js'
+import { Block, Content, Decorator } from '@src/immutable/index.js'
 import { List } from 'immutable'
-const isDimen = (obj) => {
-    return obj && /^(img|radio|video)$/.test(obj['tag'])
-}
+import throwError from '@nifi/utils/throwError.js'
 
 
 const convertList = list => {
+
     return list.map(inline => {
-        if (!inline.hasOwnProperty('text')) {
-            inline.list = convertList(inline.list)
-            return List([inline])
+        const { decoratorTree, text } = inline
+
+        const newDecoratorTree = decoratorTree.map(decorator => Decorator.create(decorator))
+        const newDecoratorTreeList = List(newDecoratorTree)
+        if (!text.length) {
+            return List().push(Meta.create({ text: '', decoratorTree: newDecoratorTreeList }))
         }
-        if (isDimen(inline)) {
+        return List(text.match(/./usg).map(e => Meta.create({ text: e, decoratorTree: newDecoratorTreeList })))
 
-            return List([Meta.create(inline)])
-        }
-
-        let { text, ...rest } = inline
-
-        const list2 = text ?
-            List(text.match(/./usg).map(e => Meta.create({ text: e, ...rest }))) :
-            List(Meta.create({ ...rest }))
-
-        return list2
     })
 
 }
 const convertRawblock = (block) => {
-    const list = convertList(block.list).reduce((ac, el) => { return ac.concat(el) }, List())
-    const ret = { list: List(list) }
+    const list = List(convertList(block.list)).reduce((ac, el) => {
+        return List.isList(el) ? ac.concat(el) : ac.push(el)
+    }, List())
+
+    const ret = { list }
 
     const { tag, depth } = block
     if (tag) {
@@ -50,6 +45,7 @@ const convertRawblock = (block) => {
 export const convertFromRaw = (rawContent) => {
     const { blocks } = rawContent
     const blockList = blocks.map(block => convertRawblock(block))
+    console.log(blockList)
     const blockMap = BlockMapBuilder.createFromArray(blockList, true)
 
     return Content.create({ blockMap })

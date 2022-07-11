@@ -9,13 +9,13 @@ const isSelectionAtStartOfContent = (content, sel) => {
 const isSelectionAtStartOfBlock = (content, sel) => {
     const { start, startKey } = sel
     const block = content.getBlockForKey(startKey)
+
     return block && start === 0
 }
 
 
 const backspaceOnCollapse = (content, sel) => {
     const { start, startKey } = sel
-    console.log(start, startKey)
     const block = content.getBlockForKey(startKey)
     const blockList = block.getList()
     if (isSelectionAtStartOfContent(content, sel)) {
@@ -27,20 +27,20 @@ const backspaceOnCollapse = (content, sel) => {
         const beforeBlockKey = beforeBlock.getKey()
         const beforeBlock2 = beforeBlock.set('list', beforeBlockList.concat(blockList))
         const content2 = content.deleteIn(['blockMap', startKey]).setIn(['blockMap', beforeBlockKey], beforeBlock2)
-        const size = beforeBlock.size
+        const size = beforeBlock.size2
         const sel2 = sel.merge({ a: size, b: size, aKey: beforeBlockKey, bKey: beforeBlockKey, isBackward: false })
         return { content: content2, selection: sel2 }
     }
     if (blockList.size === 0) {
         const beforeBlock = content.getBlockBeforeKey(startKey)
         const beforeKey = beforeBlock.getKey()
-        const size = beforeBlock.size
+        const size = beforeBlock.size2
         const content2 = content.deleteIn(['blockMap', startKey])
         const sel2 = sel.merge({ a: size, b: size, aKey: startKey, bKey: startKey, isBackward: false })
         return { content: content2, selection: sel2 }
     }
     const index = getIndexByOffset(block, start)
-    const size = blockList.get(index).size
+    const size = blockList.get(index).size2
     const list2 = blockList.filterNot((v, i) => i === index)
     const block2 = block.set('list', list2)
 

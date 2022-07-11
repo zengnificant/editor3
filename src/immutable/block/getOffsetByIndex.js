@@ -8,7 +8,7 @@ function getInlineListSize(block) {
         return el.reduce((ac, el2, i) => {
 
 
-            ac += el2.size
+            ac += el2.size2
 
             return ac
 

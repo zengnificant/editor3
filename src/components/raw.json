@@ -5,53 +5,276 @@
         "depth": 0,
         "list": [
         {
-            "text": "🎩你好，这是一个测试",
-            "className": [],
-            "inlineStyles":
-            {},
-            "tag": "span"
+            "text": "t t",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {
+                    "color": "red",
+                    "fontSize": 20
+                },
+                "className": ["ha", "halal"],
+                "tag": "span",
+                "baseType": 0
+            },
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "a",
+                "href": "http://localhost:3000/#",
+                "baseType": 0
+            }]
+        }]
+    },
+    {
+        "tag": "div",
+        "depth": 0,
+        "list": [
+        {
+            "text": "行内块",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "span",
+                "baseType": 0
+            }]
         },
         {
-            "text": "哈",
-            "className": ["ksuyd"],
-            "inlineStyles":
-            {},
-            "tag": "span"
+            "text": "nice",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {
+                    "color": "green",
+                    "fontSize": 30
+                },
+                "className": [],
+                "tag": "b",
+                "baseType": 0
+            }]
+        },
+        {
+            "text": "行内",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "u",
+                "baseType": 0
+            }]
+        }]
+    },
+    {
+        "tag": "div",
+        "depth": 0,
+        "list": [
+        {
+            "text": "哈哈",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {
+                    "color": "red",
+                    "fontSize": 20
+                },
+                "className": ["ha", "halal"],
+                "tag": "span",
+                "baseType": 0
+            },
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "a",
+                "href": "http://localhost:3000/#",
+                "baseType": 0
+            }]
+        },
+        {
+            "text": "t2",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "span",
+                "baseType": 0
+            },
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "a",
+                "href": "http://localhost:3000/#",
+                "baseType": 0
+            }]
+        }]
+    },
+    {
+        "tag": "div",
+        "depth": 0,
+        "list": [
+        {
+            "text": "我很饿",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "span",
+                "baseType": 0
+            }]
+        }]
+    },
+    {
+        "tag": "div",
+        "depth": 0,
+        "list": [
+        {
+            "text": "我",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "span",
+                "baseType": 0
+            }]
         },
         {
             "text": "",
-            "inlineStyles":
-            {},
-            "className": ["ksuyd"],
-            "data":
+            "decoratorTree": [
             {
-                "src": "/src/logo.svg"
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "img",
+                "src": "/src/logo.svg",
+                "baseType": 1
             },
-            "tag": "img"
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "span",
+                "baseType": 0
+            }]
         }]
     },
     {
-        "tag": "div",
+        "tag": "ul",
         "depth": 0,
         "list": [
         {
-            "text": "这是第二行。",
-            "className": [],
-            "inlineStyles":
-            {},
-            "tag": "span"
+            "text": "我爱理",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "span",
+                "baseType": 0
+            }]
         }]
     },
     {
-        "tag": "div",
-        "depth": 0,
+        "tag": "ul",
+        "depth": 1,
         "list": [
         {
-            "text": "这是第3行。",
-            "className": [],
-            "inlineStyles":
-            {},
-            "tag": "span"
+            "text": "爱理",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "span",
+                "baseType": 0
+            }]
+        }]
+    },
+    {
+        "tag": "ul",
+        "depth": 1,
+        "list": [
+        {
+            "text": "爱理",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "span",
+                "baseType": 0
+            }]
+        }]
+    },
+    {
+        "tag": "ul",
+        "depth": 2,
+        "list": [
+        {
+            "text": "爱理",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "span",
+                "baseType": 0
+            }]
+        }]
+    },
+    {
+        "tag": "ul",
+        "depth": 3,
+        "list": [
+        {
+            "text": "爱理",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "span",
+                "baseType": 0
+            }]
+        }]
+    },
+    {
+        "tag": "ol",
+        "depth": 3,
+        "list": [
+        {
+            "text": "爱理",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "span",
+                "baseType": 0
+            }]
+        }]
+    },
+    {
+        "tag": "ol",
+        "depth": 3,
+        "list": [
+        {
+            "text": "爱理",
+            "decoratorTree": [
+            {
+                "inlineStyles":
+                {},
+                "className": [],
+                "tag": "span",
+                "baseType": 0
+            }]
         }]
     }]
 }

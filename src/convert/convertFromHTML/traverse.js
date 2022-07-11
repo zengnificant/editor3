@@ -1,25 +1,15 @@
 import { Meta } from '@src/immutable/index.js'
-import { OrderedMap, fromJS } from 'immutable'
+import { OrderedMap, fromJS, Map, List } from 'immutable'
+import { Block, Content, BlockMapBuilder } from '@src/immutable/index.js'
 import transformCssText from './transformCssText.js'
-import { convertFromRaw } from '@convert/convertFromRaw.js'
 import splitArr from '@nifi/utils/splitArr.js'
+import splitList from '@nifi/utils/splitList.js'
+import getNodeName from './getNodeName.js'
+
+import getMetaList from './getMetaList.js'
 import bueatifyjs from 'js-beautify'
 const bueatify = bueatifyjs.js
 
-const getNodeName = node => {
-    let nodeName = node.nodeName.toLowerCase()
-    if (nodeName === 'ol' || nodeName === 'ul') {
-        return "span"
-    }
-    if (nodeName === 'li') {
-        nodeName = node.parentNode.nodeName.toLowerCase()
-        if (nodeName != 'ul' && nodeName != 'ol') {
-            nodeName = "ul"
-        }
-    }
-
-    return nodeName
-}
 
 
 
@@ -34,21 +24,18 @@ function getSafeBodyFromHTML(html) {
 }
 
 const createEmptyBlock = () => {
-    return { type: "block", depth: 0, tag: 'div', list: [] }
+    return Block.create({ type: "block", depth: 0, tag: 'div', list: List() })
 }
 
-function splitArrByBlock(arr) {
-    return splitArr(arr, v => v.type === 'block')
+function splitListByBlock(arr) {
+    return splitList(arr, v => v.get('type') === 'block')
 }
 
 function getBlocks(blocks) {
-    const arr = splitArrByBlock(blocks)
-
+    const arr = splitListByBlock(blocks)
     const ret = arr.map(el => {
-        if (Array.isArray(el)) {
-            let emptyBlock = createEmptyBlock()
-            emptyBlock.list = el
-            return emptyBlock
+        if (List.isList(el)) {
+            return createEmptyBlock().set('list', el)
         }
         return el
     }).map(flatternBlock)
@@ -57,11 +44,14 @@ function getBlocks(blocks) {
 
 function traverseHTML(html) {
     const doc = getSafeBodyFromHTML(html)
-    let blocks = [...doc.childNodes].map(node => traverseNode(node, 0))
+    let blocks = [...doc.childNodes].map(node => traverseNode(node))
 
     const flatternBlocks = flatternArray(blocks)
-    const retBlocks = getBlocks(flatternBlocks)
-    return convertFromRaw({ blocks: retBlocks })
+
+    const retBlocks = getBlocks(flatternBlocks).map(b => Block.create(b))
+    const blockMap = BlockMapBuilder.createFromArray(retBlocks)
+    return Content.create({ blockMap })
+
 }
 
 
@@ -76,17 +66,21 @@ function isBr(node) {
     return getNodeName(node) === "br"
 }
 
-function isDimen(node) {
-    return /^(img|radio|video)$/.test(getNodeName(node))
+function isIMG(node) {
+    return getNodeName(node) === 'img'
 }
+
 
 
 function isBaseNode(node) {
     return isBr(node) ||
         isTextNode(node) ||
-        isDimen(node)
+        isIMG(node)
 }
 
+function getBaseNode(node) {
+    if (isBaseNode(node)) return node
+}
 
 function isBlockNode(node) {
 
@@ -94,44 +88,43 @@ function isBlockNode(node) {
 
 }
 
-
-function flatternBlock(block) {
-    if (!block.list.find(el => el.type === 'block')) {
-        return block;
-    }
-    const immutableBlock = fromJS(block)
-    let ret = [];
-    splitArrByBlock(block.list).map(el => {
-        if (Array.isArray(el)) {
-            let curBlock = immutableBlock.toJS()
-            curBlock.list = el
-            ret.push(curBlock)
-            return
-        }
-        let curBlock = el;
-        let blocks = flatternBlock(curBlock)
-        ret = ret.concat(blocks)
-    })
-    return ret
-}
-
-
-function flatternArray(arr) {
-    let ret = []
-    arr.map(el => {
-        if (Array.isArray(el)) {
+function flatternArray(list) {
+    let ret = List()
+    list.map(el => {
+        if (List.isList(el)) {
             ret = ret.concat(flatternArray(el))
             return;
         }
-        ret.push(el)
+        ret = ret.push(el)
     })
     return ret
 }
+
+function flatternBlock(block) {
+    const list = block.get('list')
+    if (!list.find(el => el.get('type') === 'block')) {
+        return block;
+    }
+    let ret = List();
+    splitListByBlock(list).map(el => {
+        if (List.isList(el)) {
+            ret = ret.push(block.set('list', el))
+            return
+        }
+        let curBlock = el;
+        let blockOrList = flatternBlock(curBlock)
+        ret = ret.concat(List.isList(blockOrList) ? blockOrList : List([blockOrList]))
+    })
+    return ret
+}
+
 
 
 
 function traverseNode(node, depth = 0) {
-    if (isBaseNode(node)) return traverseMetaNode(node)
+    if (isBaseNode(node)) {
+        return getMetaList(node)
+    }
     if (isBlockNode(node)) {
         let nextDepth = depth;
         if (getNodeName(node) === 'ol' || getNodeName(node) === 'ul') {
@@ -139,97 +132,16 @@ function traverseNode(node, depth = 0) {
         }
 
         const blockNodes = [...node.childNodes].map(node2 => traverseNode(node2, nextDepth))
-        return { type: 'block', depth: depth, tag: getNodeName(node), list: flatternArray(blockNodes) }
+        return Map({ type: 'block', depth, tag: getNodeName(node), list: List(flatternArray(blockNodes)) })
     }
 
 
     const inlineNodes = [...node.childNodes].map(node => traverseNode(node, depth))
-    return inlineNodes
-}
-
-function traverseLinkNode(node, depth = 0) {
-    const childNodes = [...node.childNodes].map(node2 => traverseNode(node2, depth))
-
-    const attrs = getAttrsForLinkNode(node)
-    const getLinkFromList = (list) => ({ type: 'link', tag: getNodeName(node), list, ...attrs })
-    let list = splitArr(flatternArray(childNodes), a => a.type === 'block')
-    if (!list.find(e => !Array.isArray(e))) {
-        return getLinkFromList(list)
-    }
-    let ret = []
-    list.map(el => {
-        if (Array.isArray(el)) {
-            ret = ret.concat(getLinkFromList(el));
-            return
-        }
-        const block = el;
-        block.list = [getLinkFromList(block.list)]
-
-        ret.push(block)
-
-
-    })
-
-
-    return ret;
-
-}
-
-function isLinkNode(node) {
-    return getNodeName(node) === 'a'
-
+    return List(inlineNodes)
 }
 
 
-function getAttrsForLinkNode(node) {
-    const inlineStyles = transformCssText(node.style.cssText)
-    const href = node.href;
-    const className = [...node.classList]
-    const data = { href }
-
-    return { inlineStyles, className, data }
-}
-
-function traverseMetaNode(node) {
-
-    if (isDimen(node)) { return traverseDimen(node) }
-
-    return traverseText(node)
-}
-
-function traverseDimen(node) {
-    const pNode = node.parentNode
-    const className = [...pNode.classList]
-
-    const inlineStyles = transformCssText(pNode.style.cssText)
-    const tag = getValidTag(node.tagName.toLowerCase())
-    const src = node.getAttribute('src')
-    const alt = node.getAttribute('alt')
-    const data = { src, alt }
-
-    return [{ tag, className, inlineStyles, data }]
-}
-
-
-
-function getValidTag(tag) {
-    const tags = ['span', 'b', 'strong', 'i', 'u', 'img', 'radio', 'video']
-    if (!tags.includes(tag)) {
-        return "span"
-    }
-    return tag
-}
-
-function traverseText(node) {
-    console.log(node)
-    const pNode = node.parentNode
-    const className = [...pNode.classList]
-    const inlineStyles = transformCssText(pNode.style.cssText)
-    const tag = getValidTag(pNode.tagName.toLowerCase())
-    let _text = tag === 'br' ? '' : node.nodeValue;
-    const text = _text.replace(/^ *(.*?) *$/s, '$1')
-    return { tag, text, className, inlineStyles }
-}
+const html = `<a class="ha halal" style="color:red;font-size:20px" href="#">   t t <div>行内块<u>行内</u></div> 哈哈<span>t2</span></a><div>我很饿</div>我<img src="/src/logo.svg"/><li>我爱理<ul><li>爱理</ul><ul><li>爱理<ul><li>爱理<ul><li>爱理</li></ul><ol><li>爱理</li></ol><ol><li>爱理</li></ol></li></ul></li></ul></li>`
 
 
 export default traverseHTML

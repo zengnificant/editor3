@@ -4,14 +4,13 @@ const isSelectionAtEndOfContent = (content, sel) => {
     const { end, endKey } = sel
     const lastBlock = content.getLastBlock()
     const lastBlockKey = lastBlock.getKey()
-    return endKey === lastBlockKey && end === lastBlock.size
+    return endKey === lastBlockKey && end === lastBlock.size2
 }
 
 const isSelectionAtEndOfBlock = (content, sel) => {
     const { end, endKey } = sel
     const block = content.getBlockForKey(endKey)
-    console.log(block, block.getList(), block.size)
-    return block && end === block.size
+    return block && end === block.size2
 }
 
 
@@ -37,7 +36,7 @@ export const deleteOnCollapse = (content, sel) => {
 
         const block2 = block.set('list', blockList.concat(afterBlockList))
         const content2 = content.deleteIn(['blockMap', afterBlockKey]).setIn(['blockMap', startKey], block2)
-        const size = block.size
+        const size = block.size2
         const sel2 = sel.merge({ a: size, b: size, aKey: startKey, bKey: startKey, isBackward: true })
         return { content: content2, selection: sel2 }
     }
@@ -49,7 +48,7 @@ export const deleteOnCollapse = (content, sel) => {
         return { content: content2, selection: sel2 }
     }
     const index = getIndexByOffset(block, start)
-    const size = blockList.get(index).size
+    const size = blockList.get(index).size2
     const list2 = blockList.filterNot((v, i) => i === index + 1)
     const block2 = block.set('list', list2)
     const sel2 = sel.merge({ a: start, b: start, aKey: startKey, bKey: startKey, isBackward: true })

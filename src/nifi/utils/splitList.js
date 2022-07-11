@@ -25,7 +25,6 @@ const splitList = (list, fn) => {
         ret.push(list.get(el));
         return el;
     }, 0)
-
     return List(ret).slice(0, -1)
 }
 

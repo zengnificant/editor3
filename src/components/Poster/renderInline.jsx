@@ -3,6 +3,13 @@ import ReactDOM from 'react-dom'
 import getInlineFromBlock from '@src/immutable/block/getInlineList.js'
 import { Meta } from '@src/immutable/index.js'
 
+function getComponentForDecorator(decorator) {
+    const { baseType, tag, inlineStyles, className: classNameList, ...data } = decorator
+    const Tag = tag
+    const className = classNameList.join(' ')
+    const style = inlineStyles
+    return props => <Tag className={className}  style={style} {...data} {...props}/>
+}
 
 
 
@@ -13,32 +20,18 @@ const renderInline = (block) => {
     const blockKey = block.getKey()
     const renderInlineFromList = (list, k) => {
         const getKey = () => `${blockKey}&&${k}`
+
+
         const firstEl = list.first()
-        const data = firstEl.getData().toJS()
-        const Tag = firstEl.getTag()
-        const className = firstEl.getClassName().join(' ')
+        const decorator = firstEl.getDecoratorTree().first().toJS()
+        const Inline = getComponentForDecorator(decorator)
 
-        const inlineStyles = firstEl.getInlineStyles().toJS()
-
-
-        if (Meta.isDimen(firstEl)) {
-            return className ?
-                <span key={getKey()}  className={className} style={inlineStyles}>
-            <Tag {...data}  />
-            </span> :
-                <span key={getKey()}   style={inlineStyles}>
-            <Tag {...data}  />
-            </span>
+        if (decorator.baseType) {
+            return <Inline key={getKey()} />
         }
-
         const Text = list.map(e => e.getText()).join('')
-        return className ?
-            <Tag {...data}  key={getKey()} className={className} style={inlineStyles}>
-   {Text}
-   </Tag> :
-            <Tag {...data}  key={getKey()}  style={inlineStyles}>
-   {Text}
-   </Tag>
+        return <Inline key={getKey()} >{Text}</Inline>
+
     }
 
 

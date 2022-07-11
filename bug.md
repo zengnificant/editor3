@@ -6,3 +6,9 @@
 
 
 2.  使用keydown  不用使用keyup;   keydown会有默认行为
+
+3.  长按delete   ul键
+
+4.  immutable     Record的  键 不能有 size ; Record衍生class  不能  设  `get  size(){}`
+5.  inlineStyles  是OrderedMap  注意不要带入成Object。
+6.  defaultRecord  遵循 object  null,   字符串  undefined

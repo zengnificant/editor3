@@ -96,6 +96,7 @@ class App extends Component {
         const changedBlocks = convertBlocks(content.getBlocks())
             .map(el => getNewList(el))
 
+
         return <Fragment>
         {changedBlocks.map((el,i)=>List.isList(el)?renderLiList(el):renderBlock(el))}
         </Fragment>

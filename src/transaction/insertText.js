@@ -1,5 +1,5 @@
 import { Meta } from '@src/immutable/index.js'
-import { List } from 'immutable'
+import { List, OrderedMap } from 'immutable'
 import getIndexByOffset from '@src/immutable/block/getIndexByOffset.js'
 import { backspaceOnRange } from '@src/command/backspace.js'
 
@@ -12,7 +12,7 @@ export const insertTextOnCollapse = (content, sel, text, inlineStyles) => {
     const block = content.getBlockForKey(startKey)
     const index = getIndexByOffset(block, start)
     const blockList = block.getList()
-    let list = List(text.match(/./usg)).map((text => Meta.create({ inlineStyles, text })))
+    let list = List(text.match(/./usg)).map((text => Meta.create({ text }).setIn(['decoratorTree', 0, 'inlineStyles'], OrderedMap(inlineStyles))))
 
     const getlist = (list) => {
         return insertIntoList(blockList, list, index)

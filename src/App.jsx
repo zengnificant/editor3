@@ -4,15 +4,15 @@ import './App.css'
 import Editor from '@components/Editor/Editor.jsx'
 import { List, OrderedMap, OrderedSet, Stack, is, fromJS, Iterable } from 'immutable'
 const { isIterable } = Iterable
-
-
+const a = List().concat([1, 'wo'])
+//console.log(a)
 function App() {
     const [count, setCount] = useState(0)
     return (
         <div className="App" >
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <Editor/>
+       <Editor/>
         <p>Hello Vite + React! </p>
         <p>
           <button type="button" onClick={() => setCount((count) => count + 1)}>
