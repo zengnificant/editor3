@@ -101,7 +101,7 @@ const getMetaListForIMG = (node) => {
     data = data.merge({ src, alt })
 
     const baseDecorator = Decorator.create({ tag: checkTag, baseType: 1 }).merge(data)
-    const decoratorTree = getDecoratorTree(pNode).unshift(Decorator.create({ tag })).unshift(baseDecorator)
+    const decoratorTree = getDecoratorTree(pNode).unshift(baseDecorator)
     const meta = Meta.create({ decoratorTree })
     return List().push(meta)
 }
