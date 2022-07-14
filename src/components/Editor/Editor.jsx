@@ -2,7 +2,7 @@ import React, { Component, Fragment, createRef } from 'react'
 import ReactDOM from 'react-dom'
 import { Content, Selection, Meta, Block } from '@src/immutable/index.js'
 
-import { is, Map, fromJS, OrderedMap } from 'immutable'
+import { is, Map, fromJS, OrderedMap, List } from 'immutable'
 import EditorStyled from './EditorStyled.jsx'
 import EditorContent from './EditorContent.jsx'
 import getEditorSelection from '@src/selection/getEditorSelection.js'
@@ -43,12 +43,12 @@ const beautify = js => beautifyjs.js(JSON.stringify(js))
 // const content = doc2
 //const rawContent = beautify(convertToRaw(content))
 
-const html = `<a class="ha halal" style="color:red;font-size:20px" href="#">   t t <div>行内块<b style="color:green;font-size:30px;">nice</b><u>行内</u></div> 哈哈<span>t2</span></a><div>我很饿</div>我<img src="/src/logo.svg"/><li>我爱理<ul><li>爱理</ul><ul><li>爱理<ul><li>爱理<ul><li>爱理</li></ul><ol><li>爱理</li></ol><ol><li>爱理</li></ol></li></ul></li></ul></li>`
+const html = `<a class="ha halal" style="color:red;font-size:20px" href="#">   t t <b style="color:green;font-size:30px;">nice</b></a><div>行内块<u>行内</u></div> 哈哈<span>t2</span><div>我很饿</div>我<img src="/src/logo.svg"/><li>我爱理<ul><li>爱理</ul><ul><li>爱理<ul><li>爱理<ul><li>爱理</li></ul><ol><li>爱理</li></ol><ol><li>爱理</li></ol></li></ul></li></ul></li>`
 var content = convertFromHTML(html)
 //var content1 = convertFromRaw(raw)
-//const rawContent = beautify(convertToRaw(content))
-//console.log(rawContent)
-
+const rawContent = beautify(convertToRaw(content))
+console.log(rawContent)
+// 
 //console.log(Content.is(content, content1))
 
 
@@ -62,6 +62,100 @@ const wait = (cb) => {
 
 const delay = async (time) => {
     await setTimeout(null, time * 1000)
+}
+
+
+const testA = List([2, 1, 4, 7])
+const testB = List([2, 1, 3, 4])
+const testC = List([2, 1, 3, 4, 9, 6])
+
+
+
+function changeA(a) {
+
+    return a.reverse().reduce((ac, el, i) => {
+            if (i == 0) {
+                return ac.push(Map({ text: el }))
+            }
+            return List([Map({ text: el, children: ac })])
+        },
+        List())
+}
+
+
+
+function changeB(a, b) {
+    let before = a.pop()
+    let retA = a.last();
+    const firstA = retA.get('text');
+    const firstAChildren = retA.get('children');
+    let retB = b.first()
+    const firstB = retB.get('text');
+    const firstBChildren = retB.get('children');
+    let after = b.shift()
+
+    if (is(firstA, firstB)) {
+        if (!firstAChildren || !firstBChildren) {
+            //let temp = retA.concat(retB)
+            return a.concat(b)
+        }
+
+        let tempChildren = changeB(firstAChildren, firstBChildren)
+
+        retA = retA.set('children', tempChildren)
+
+
+        return before.push(retA).concat(after)
+    }
+
+    return a.concat(b)
+
+
+
+}
+
+const check = [changeA(testA), changeA(testB), changeA(testC)].reduce((a, b, i) => {
+    if (i === 0) {
+        return a;
+    }
+
+    return changeB(a, b)
+}, changeA(testA))
+
+//const test = changeB(changeA(testA), changeA(testB))
+
+console.log(beautify(check.toJS()))
+
+
+// function joinA(a, b) {
+//     if (is(a, b)) return a;
+//     let ret = List()
+
+//     a.some((v, k) => {
+//         if (is(v, b.get(k))) {
+//             const restA = a.slice(k);
+//             const restB = b.slice(k)
+//             ret = ret.push(v)
+//             return false;
+//         }
+//         ret = ret.push(List([a.slice(k), b.slice(k)]))
+//         return true
+//     })
+
+//     return ret
+
+// }
+
+
+
+function joinArr(arr) {
+    arr.map(el => List.isList(el) ? el : List.push(el))
+
+
+    reduce((ac, el, i) => {
+        if (i === o) { return ac.push(el) }
+
+    }, List())
 }
 
 
@@ -181,13 +275,14 @@ class App extends Component {
     onKeyUp = e => {
         switch (e.keyCode) {
             case LEFT:
-                return this.acceptSelection(selection.set('isBackward', true))
+                return this.acceptSelection(this._selection.set('isBackward', true))
             case RIGHT:
-                return this.acceptSelection(selection.set('isBackward', false))
+                return this.acceptSelection(this._selection.set('isBackward', false))
             case UP:
             case DOWN:
-
+                return this.acceptSelection(this._selection.set('isBackward', false))
             default:
+
         }
     }
 

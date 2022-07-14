@@ -2,6 +2,7 @@ import { Content, Selection } from '@src/immutable/index.js'
 import { List } from 'immutable'
 import getOffsetByIndex from '@src/immutable/block/getOffsetByIndex.js'
 import { BLOCK_KEY_NAME } from '@constants/arg.js'
+import { INLINE_INDEX } from '@constants/arg.js'
 
 const isNull = (any) => {
     return any == null
@@ -54,11 +55,19 @@ function isBlockNode(node) {
 
 function getLeafNode(node) {
 
-    while (isTextNode(node) || isNull(node.getAttribute('data-index'))) {
+    while (isTextNode(node) || isNull(node.getAttribute(INLINE_INDEX))) {
         node = node.parentNode
     }
     return node
 }
+
+function getBlockNodeFromLeafNode(node) {
+    while (!isBlockNode(node)) {
+        node = node.parentNode
+    }
+    return node
+}
+
 
 function getPoint(node, offset, content) {
     let leafNode, leafIndex, leafOffset, blockNode, blockKey, block;
@@ -68,8 +77,8 @@ function getPoint(node, offset, content) {
     }
     leafNode = getLeafNode(node)
 
-    leafIndex = leafNode.getAttribute('data-index')
-    blockNode = leafNode.parentNode
+    leafIndex = leafNode.getAttribute(INLINE_INDEX)
+    blockNode = getBlockNodeFromLeafNode(leafNode)
     blockKey = blockNode.getAttribute(BLOCK_KEY_NAME)
     block = content.getBlockForKey(blockKey)
     leafOffset = getOffsetByIndex(block, parseInt(leafIndex))

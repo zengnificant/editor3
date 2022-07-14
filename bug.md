@@ -12,3 +12,4 @@
 4.  immutable     Record的  键 不能有 size ; Record衍生class  不能  设  `get  size(){}`
 5.  inlineStyles  是OrderedMap  注意不要带入成Object。
 6.  defaultRecord  遵循 object  null,   字符串  undefined
+<a class="ha halal" style="color:red;font-size:20px" href="#">   t t <b style="color:green;font-size:30px;">nice</b></a><div>行内块<u>行内</u></div> 哈哈<span>t2</span><div>我很饿</div>我<img src="/src/logo.svg"/><li>我爱理<ul><li>爱理</ul><ul><li>爱理<ul><li>爱理<ul><li>爱理</li></ul><ol><li>爱理</li></ol><ol><li>爱理</li></ol></li></ul></li></ul></li>

@@ -16,7 +16,7 @@ export const splitOnCollapse = (cnt, sel) => {
     const list1 = blockList.slice(0, index + 1)
     const list2 = blockList.slice(index + 1)
     const newBlock = Block.createFromList(list2)
-    const oldBlock = list1.size ? block.set('list', list1) : block.set('list', list1.push(new Meta))
+    const oldBlock = block.set('list', list1)
     const afterKey = newBlock.getKey()
 
     let content = cnt.setIn(['blockMap', startKey], oldBlock).addBlockAfterKey(startKey, newBlock)
