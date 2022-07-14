@@ -9,6 +9,8 @@ import dealWithInlineList from '@src/immutable/block/dealWithInlineList.js'
 import beautifyjs from 'js-beautify'
 const beautify = js => beautifyjs.js(JSON.stringify(js))
 
+
+
 const renderChangedInlines = (inlines) => {
     return inlines.map((inline, k) => renderChangedInline(inline, k))
 }
@@ -31,7 +33,7 @@ function renderChangedInline(inline, k) {
 
     if (baseType != 0) {
         const index = children.getIn([0, "decorator", "index"])
-        return <span {...getIndexData(index)} key={`${k}&&${index}`}>
+        return <span  key={`${k}&&${index}`}>
            <El/>
            </span>
     }
@@ -41,7 +43,7 @@ function renderChangedInline(inline, k) {
         const index = children.getIn([0, "decorator", "index"])
         const text = children.getIn([0, "decorator", "text"])
 
-        return <El key={`${k}&&${index}`} {...getIndexData(index)}>
+        return <El key={`${k}&&${index}`} >
             {text}
     </El>
     }
@@ -58,10 +60,10 @@ function renderChangedInline(inline, k) {
 
 const renderInline = (block) => {
     if (block.isEmpty()) {
-        return <span {...getIndexData(0)}>
-            <br  data-text={true}/>
-            </span>
+        return <br />
+
     }
+
 
     const inlines = getInlineFromBlock(block)
     const testInlines = dealWithInlineList(inlines)

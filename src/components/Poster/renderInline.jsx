@@ -1,44 +1,69 @@
 import React, { Component, Fragment, createRef } from 'react'
 import ReactDOM from 'react-dom'
 import getInlineFromBlock from '@src/immutable/block/getInlineList.js'
-import { Meta } from '@src/immutable/index.js'
+import { Meta, Decorator } from '@src/immutable/index.js'
+import { Map } from 'immutable'
 
-function getComponentForDecorator(decorator) {
+import dealWithInlineList from '@src/immutable/block/dealWithInlineList.js'
+import beautifyjs from 'js-beautify'
+const beautify = js => beautifyjs.js(JSON.stringify(js))
+
+
+
+const renderChangedInlines = (inlines) => {
+    return inlines.map((inline, k) => renderChangedInline(inline, k))
+}
+
+
+function renderChangedInline(inline, k) {
+    const decorator = inline.get('decorator').toJS()
     const { baseType, tag, inlineStyles, className: classNameList, ...data } = decorator
+
     const Tag = tag
     const className = classNameList.join(' ')
     const style = inlineStyles
-    return props => <Tag className={className}  style={style} {...data} {...props}/>
+    const El = props => <Tag className={className}  style={style} {...data} {...props}/>
+    const children = inline.get('children')
+
+    if (baseType != 0) {
+        const index = children.getIn([0, "decorator", "index"])
+        return <span  key={`${k}&&${index}`}>
+           <El/>
+           </span>
+    }
+    let childFirst = children.get(0)
+    if (!Decorator.isDecorator(childFirst.get('decorator'))) {
+
+        const index = children.getIn([0, "decorator", "index"])
+        const text = children.getIn([0, "decorator", "text"])
+
+        return <El key={`${k}&&${index}`} >
+            {text}
+    </El>
+    }
+
+    return <El key={`${k}&&${Tag}`}>
+            {
+               renderChangedInlines(children)
+            }
+    </El>
+
 }
 
 
 
 const renderInline = (block) => {
     if (block.isEmpty()) {
-        return <br/>
-    }
-    const blockKey = block.getKey()
-    const renderInlineFromList = (list, k) => {
-        const getKey = () => `${blockKey}&&${k}`
-
-
-        const firstEl = list.first()
-        const decorator = firstEl.getDecoratorTree().first().toJS()
-        const Inline = getComponentForDecorator(decorator)
-
-        if (decorator.baseType) {
-            return <Inline key={getKey()} />
-        }
-        const Text = list.map(e => e.getText()).join('')
-        return <Inline key={getKey()} >{Text}</Inline>
+        return <br />
 
     }
 
 
     const inlines = getInlineFromBlock(block)
-    const inlines2 = inlines.map(renderInlineFromList)
+    const testInlines = dealWithInlineList(inlines)
+
     return <Fragment>
-        {inlines2}
+        {renderChangedInlines(testInlines)}
     </Fragment>
 
 
