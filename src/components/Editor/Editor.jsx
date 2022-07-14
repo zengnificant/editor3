@@ -277,6 +277,7 @@ class App extends Component {
             case LEFT:
                 return this.acceptSelection(this._selection.set('isBackward', true))
             case RIGHT:
+                console.log(window.getSelection())
                 return this.acceptSelection(this._selection.set('isBackward', false))
             case UP:
             case DOWN:

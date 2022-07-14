@@ -5,6 +5,9 @@ import getInlineByOffset from '@src/immutable/block/getInlineByOffset.js'
 import { BLOCK_KEY_NAME } from '@constants/arg.js'
 import { INLINE_INDEX } from '@constants/arg.js'
 
+function isTextNode(node) {
+    return node.nodeType === Node.TEXT_NODE
+}
 const getPoint = (content, blockKey, offsetX) => {
     const node = document.querySelector(`[${BLOCK_KEY_NAME}=${blockKey}]`)
     const block = content.getBlockForKey(blockKey);
@@ -14,7 +17,9 @@ const getPoint = (content, blockKey, offsetX) => {
     const inlineNode = node.querySelectorAll(`[${INLINE_INDEX}='${realIndex}']`)[0]
 
     const baseNode = inlineNode.childNodes[0]
-    console.log(baseNode, offset)
+    if (!isTextNode(baseNode)) {
+        return [inlineNode, offset]
+    }
     return [baseNode, offset]
 
 }
