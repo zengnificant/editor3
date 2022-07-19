@@ -1,17 +1,6 @@
 import getIndexByOffset from '@src/immutable/block/getIndexByOffset.js'
+import { isSelectionAtStartOfContent, isSelectionAtStartOfBlock } from './check.js'
 
-const isSelectionAtStartOfContent = (content, sel) => {
-    const { start, startKey } = sel
-    const firstBlockKey = content.getFirstBlock().getKey()
-    return startKey === firstBlockKey && start === 0
-}
-
-const isSelectionAtStartOfBlock = (content, sel) => {
-    const { start, startKey } = sel
-    const block = content.getBlockForKey(startKey)
-
-    return block && start === 0
-}
 
 
 const backspaceOnCollapse = (content, sel) => {

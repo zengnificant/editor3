@@ -55,7 +55,7 @@ const renderLi = (block, i) => {
     const children = block.getChildren();
     const list = block.getList()
 
-    return <li className="EditorBlock" key={block.getKey()} {...dataKeyOBJ}>
+    return <li className="EditorBlock" data-block-depth={block.getDepth()} key={block.getKey()} {...dataKeyOBJ}>
              {renderInline(block)}
              {children?renderLiList(children):null}
           </li>

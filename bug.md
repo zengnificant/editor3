@@ -7,3 +7,4 @@
 
 3. 使用keydown  不用使用keyup;   keydown会有默认行为
 4. node 是img ,range.setStart(node,1) 出错：Failed to execute 'setStart' on 'Range': There is no child at offset 1.
+解决方法 ：range.setStart(node.parent,1)

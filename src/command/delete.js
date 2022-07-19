@@ -1,18 +1,7 @@
 import getIndexByOffset from '@src/immutable/block/getIndexByOffset.js'
 import { backspaceOnRange } from './backspace.js'
-const isSelectionAtEndOfContent = (content, sel) => {
-    const { end, endKey } = sel
-    const lastBlock = content.getLastBlock()
-    const lastBlockKey = lastBlock.getKey()
-    return endKey === lastBlockKey && end === lastBlock.size2
-}
 
-const isSelectionAtEndOfBlock = (content, sel) => {
-    const { end, endKey } = sel
-    const block = content.getBlockForKey(endKey)
-    return block && end === block.size2
-}
-
+import { isSelectionAtEndOfContent, isSelectionAtEndOfBlock } from './check.js'
 
 
 const getSel = sel => {
@@ -24,7 +13,6 @@ export const deleteOnCollapse = (content, sel) => {
     const { start, startKey } = sel
     const block = content.getBlockForKey(startKey)
     const blockList = block.getList()
-    console.log(isSelectionAtEndOfContent(content, sel))
     if (isSelectionAtEndOfContent(content, sel)) {
 
         return { content, selection: getSel(sel) }

@@ -1,9 +1,9 @@
 //@es6
-import { Map, OrderedMap, OrderedSet, List } from 'immutable'
+import { Map, OrderedMap, OrderedSet, List,fromJS } from 'immutable'
 import transformCssText from './transformCssText.js'
 import getNodeName from './getNodeName.js'
 import getNodeData from './getNodeData.js'
-
+import getDisplay from './getDisplay.js'
 import { Decorator, Meta, Test } from '@src/immutable/index.js'
 
 function isTextNode(node) {
@@ -46,6 +46,30 @@ function getLinkDecorator(node) {
     return Decorator.create({ href, alt, tag })
 }
 
+
+
+
+function getNodeValue(node){
+    const pNode = node.parentNode
+    let childNodes=[...pNode.childNodes]
+    const index=childNodes.indexOf(node);
+   
+    let value=node.nodeValue
+    if(index===0) value= value.trimLeft()
+    if(index===childNodes.length-1){
+        value=value.trimRight()
+    }
+    const before=childNodes[index-1]
+    if(getDisplay(before)==='block'){
+        value= value.trimLeft()
+    }
+    const after=childNodes[index+1]
+    if(getDisplay(after)==='block'){
+        value= value.trimRight()
+    }
+    return value;
+}
+
 const getMetaListForText = (node) => {
     if (!isTextNode(node)) {
         return;
@@ -56,7 +80,7 @@ const getMetaListForText = (node) => {
     const data = getNodeData(pNode)
     const baseDecorator = Decorator.create({ tag }).merge(data)
     const decoratorTree = getDecoratorTree(pNode).unshift(baseDecorator)
-    const MetaList = node.nodeValue.replace(/^ *(.*?) *$/s, '$1').match(/./usg).map(e =>
+    const MetaList = getNodeValue(node).match(/./usg).map(e =>
         Meta.create({ text: e, decoratorTree }))
     return List().concat(MetaList)
 }

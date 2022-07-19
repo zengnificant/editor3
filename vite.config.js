@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import reactRefresh from '@vitejs/plugin-react-refresh'
-import localScopedModules from './vite-plugin-local-scoped-modules/index.js'
+import localScopedModules from 'vite-plugin-local-scoped-modules'
 import { resolve } from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -49,6 +49,10 @@ export default defineConfig({
                 {
                     "name": "@convert",
                     "dir": "~/src/convert"
+                },
+                {
+                    "name": "@redux",
+                    "dir": "~/src/redux"
                 }
             ]
         }),

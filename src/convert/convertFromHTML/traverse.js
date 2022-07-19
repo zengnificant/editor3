@@ -9,13 +9,34 @@ import getNodeName from './getNodeName.js'
 import getMetaList from './getMetaList.js'
 import bueatifyjs from 'js-beautify'
 const bueatify = bueatifyjs.js
+const NBSP = '&nbsp;';
+const SPACE = ' ';
+
+// used for replacing characters in HTML
 
 
 
 
 
 function getSafeBodyFromHTML(html) {
+    const NBSP = '&nbsp;';
+    const SPACE = ' ';
 
+    // used for replacing characters in HTML
+    const REGEX_CR = new RegExp('\r', 'g');
+    const REGEX_LF = new RegExp('\n', 'g');
+    const REGEX_LEADING_LF = new RegExp('^\n', 'g');
+    const REGEX_NBSP = new RegExp(NBSP, 'g');
+    const REGEX_CARRIAGE = new RegExp('&#13;?', 'g');
+    const REGEX_ZWS = new RegExp('&#8203;?', 'g');
+
+
+    html = html
+        .trim()
+        .replace(REGEX_CR, '')
+        .replace(REGEX_NBSP, SPACE)
+        .replace(REGEX_CARRIAGE, '')
+        .replace(REGEX_ZWS, '');
     if (!DOMParser) return null;
     const parser = new DOMParser()
     if (!parser.parseFromString) return null;
