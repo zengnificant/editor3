@@ -72,5 +72,12 @@ export default class Selection extends StupidRecord(defaultRecord) {
         });
     }
 
+    static createAtEndOfContent(content) {
+        const block = content.getLastBlock()
+        const key = block.getKey();
+        const size = block.size2;
+        return Selection.createByKey(key).merge({ a: size, b: size })
+    }
+
 
 }

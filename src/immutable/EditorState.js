@@ -18,10 +18,10 @@ const defaultRecord = {
     selection
 };
 
-export default class State extends StupidRecord(defaultRecord) {
+export default class EditorState extends StupidRecord(defaultRecord) {
     static create(any) {
 
-        return new State(any)
+        return new EditorState(any)
 
     }
 }

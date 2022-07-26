@@ -7,8 +7,9 @@ import { INLINE_INDEX } from '@constants/arg.js'
 const isNull = (any) => {
     return any == null
 }
-const getSelection = (sel, gsel, content) => {
+const getSelection = ({ content, selection }, gsel) => {
     const { anchorNode, anchorOffset, focusNode, focusOffset, isCollapsed } = gsel
+    let sel = selection == null ? Selection.createAtEndOfContent(content) : selection
     if (!anchorNode || !focusNode) {
         return sel
     }

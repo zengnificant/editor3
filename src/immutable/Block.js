@@ -64,10 +64,9 @@ export default class Block extends StupidRecord(defaultRecord) {
     }
 
     static createFromText(text) {
-        if (text == null) return Block.createFromText('')
+        if (text == null || text == '') return Block.create({ list: List() })
 
-        const textArr0 = text.match(/./usg)
-        const textArr = textArr0 ? textArr0 : ['']
+        const textArr = text.match(/./usg)
         const list = List().concat(textArr.map(Meta.createFromText))
 
         return Block.create({ list })

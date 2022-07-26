@@ -7,13 +7,14 @@ const insertIntoList = (list, toInsert, index) => {
     return list.slice(0, index + 1).concat(toInsert).concat(list.slice(index + 1))
 }
 export const insertTextOnCollapse = (content, sel, text, inlineStyles) => {
+
     const isBackward = sel.getIsBackward()
     const { start, startKey } = sel
     const block = content.getBlockForKey(startKey)
     const index = getIndexByOffset(block, start)
     const blockList = block.getList()
     let list = List(text.match(/./usg)).map((text => Meta.create({ text }).setIn(['decoratorTree', 0, 'inlineStyles'], OrderedMap(inlineStyles))))
-
+    console.log(list)
     const getlist = (list) => {
         return insertIntoList(blockList, list, index)
     }

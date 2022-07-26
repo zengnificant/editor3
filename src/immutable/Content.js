@@ -109,13 +109,6 @@ export default class Content extends StupidRecord(defaultRecord) {
         function getBlocksOfSameKey(content) {
             return content.getBlocks().map(block => block.set('key', 0))
         }
-        let a = getBlocksOfSameKey(content),
-            b = getBlocksOfSameKey(content2)
-        a.map((block, index) => {
-
-            const blockB = b.get(index)
-            console.log(block, blockB, is(block, blockB))
-        })
         return Content.isContent(content) &&
             Content.isContent(content2) && is(getBlocksOfSameKey(content), getBlocksOfSameKey(content2))
 

@@ -1,6 +1,6 @@
 import { getKeyCommand, handleOnKeyCommand } from '@src/handlers/keyCommandBindings/index.js'
 
-function handleOnKeyDown(e, { content, selection }, onChange, keyBinding) {
+function handleOnKeyDown(e, state, keyBinding) {
     if (!keyBinding) {
         keyBinding = getKeyCommand
     }
@@ -9,7 +9,7 @@ function handleOnKeyDown(e, { content, selection }, onChange, keyBinding) {
 
     if (command) {
         e.preventDefault()
-        handleOnKeyCommand(command, { content, selection }, onChange)
+        handleOnKeyCommand(command, state)
     }
 }
 

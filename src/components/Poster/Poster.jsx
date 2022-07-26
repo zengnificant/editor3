@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 
 import PosterStyled from './PosterStyled.jsx'
 import PosterContent from './PosterContent.jsx'
+import decorator from '@components/Editor/decorator.js'
+
 class App extends Component {
 
     constructor(props) {

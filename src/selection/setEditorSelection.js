@@ -20,12 +20,14 @@ const getPoint = (content, blockKey, offsetX) => {
     if (!isTextNode(baseNode)) {
         return [inlineNode, offset]
     }
+
+
     return [baseNode, offset]
 
 }
 
 
-const setSelection = (content, selection) => {
+const setSelection = ({ content, selection }) => {
     const { a, b, aKey, bKey, isBackward } = selection.toJS()
     const gsel = window.getSelection();
     gsel.removeAllRanges();
@@ -38,7 +40,8 @@ const setSelection = (content, selection) => {
     range.setStart(...PointA);
     range.setEnd(...PointB);
 
-    gsel.addRange(range)
+    gsel.addRange(range);
+    return selection;
 }
 
 

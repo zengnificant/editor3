@@ -4,6 +4,7 @@ import { splitCommand } from '@src/command/split.js'
 import { deleteCommand } from '@src/command/delete.js'
 import { insertText } from '@src/transaction/insertText.js'
 import KeyCode from '@constants/KeyCode.js'
+import { A, Z } from '@constants/KeyCode.js'
 
 function isCommandKey(e) {
     return isWindows() ? isCtrlKey(e) :
@@ -61,7 +62,9 @@ function getRightCommand(e) {
 function getKeyCommand(e) {
 
     switch (e.keyCode) {
-        case 90: // Z
+        case A: // A
+            return isCommandKey(e) ? 'select-all' : null
+        case Z: // Z
             return getZCommand(e) || null;
         case KeyCode.RETURN:
             return isShiftKey(e) ? 'insert-newinline' : 'split-block';
