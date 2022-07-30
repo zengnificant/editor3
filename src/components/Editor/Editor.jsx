@@ -11,7 +11,7 @@ export default class App extends Component {
         const store = createStore()
         return (
             <Provider store={store}>
-        <Editor/>
+        <Editor />
       </Provider>
         )
     }

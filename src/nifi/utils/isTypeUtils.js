@@ -8,8 +8,13 @@ const isType = function(a) {
 export const isObject = isType('Object')
 export const isString = isType('String')
 export const isArray = isType('Array')
+export const isFunction = isType('Function')
+export const getType = b => ({}).toString.call(b)
+
 export default {
     isObject,
     isString,
-    isArray
+    isArray,
+    isFunction,
+    getType
 }

@@ -27,6 +27,7 @@ import beautifyjs from 'js-beautify'
 import Poster from '@components/Poster/Poster.jsx'
 import { convertToHTML } from '@convert/convertToHTML.js'
 import handleOnCut from '@src/handlers/handleOnCut.js'
+import handleOnClick from '@src/handlers/handleOnClick.js'
 
 import handleOnCopy from '@src/handlers/handleOnCopy.js'
 import handleOnPaste from '@src/handlers/handleOnPaste.js'
@@ -35,6 +36,9 @@ import handleOnKeyDown from '@src/handlers/handleOnKeyDown.js'
 import decorator from './decorator.js'
 
 import initState from '@redux/store/initState.js'
+
+import { pipe } from '@nifi/helpers/pipe.js'
+
 const beautify = js => beautifyjs.js(JSON.stringify(js))
 
 
@@ -67,29 +71,13 @@ class App extends Component {
         this.selection = null
         this.clipboard = null
         this.compositionMode = false
-        this.redoStack = Stack()
-        this.undoStack = Stack()
-
-
 
 
     }
-
-    getState() {
-        return { ...initState, ...this.props }
+    getCurrentState() {
+        const selection = this.selection
+        return { ...this.props, selection }
     }
-
-    componentDidMount() {
-        console.log(this.props)
-    }
-
-    restoreDOM(cb) {
-        this.setState({ editorKey: this.state.editorKey + 1 }, cb)
-    }
-    componentDidMount() {
-        console.log(this.getState())
-    }
-
 
 
 
@@ -97,42 +85,34 @@ class App extends Component {
         const gsel = window.getSelection()
         this.selection = getEditorSelection(this.props, gsel)
     }
+    forceSelection = (state) => {
+        if (!state) state = this.props
+        setEditorSelection(state);
+        this.acceptSelection();
+    }
 
 
     onClick = async (e) => {
-        this.props.onClick(this.getState())
-        console.log('2', this.getState().selection)
-        console.log('3', this.selection)
+        //避免cmd+A 再click的bug
+        wait(() => {
+            this.acceptSelection();
+            this.props.onClick(this.getCurrentState())
+        })
     }
-    // componentDidUpdate() {
-    //     console.log('2', this.getState().selection)
-    // }
 
-    onMouseUp = (e) => {
-        this.acceptSelection()
-
-    }
 
     onCopy = (e) => {
-        e.preventDefault()
-        const { content } = this.state
-        const selection = this.selection
 
-        handleOnCopy(e, { content, selection })
-
+        handleOnCopy(e, this.getCurrentState())
     }
     onPaste = (e) => {
-        e.preventDefault()
-        const { content } = this.state
-        const selection = this.selection
-        handleOnPaste(e, { content, selection }, this.onChange)
+
+        handleOnPaste(e, this.getCurrentState())
     }
 
     onCut = (e) => {
-        e.preventDefault()
-        const { content } = this.state
-        const selection = this.selection
-        handleOnCut(e, { content, selection }, this.onChange)
+
+        handleOnCut(e, this.getCurrentState())
     }
 
     onKeyUp = e => {
@@ -151,9 +131,12 @@ class App extends Component {
 
 
     onKeyDown = (e) => {
-
-
-        handleOnKeyDown(e, this.getState())
+        handleOnKeyDown(e, this.getCurrentState())
+        // if (is(state.content, _lastState.content) && !is(state.selection, _lastState.selection)) {
+        //     setEditorSelection(state)
+        // }
+        // console.log(state.selection)
+        // this.acceptSelection()
     }
 
 
@@ -165,8 +148,10 @@ class App extends Component {
         const text = e.data
 
         if (!text) return;
-        const insertText = () => {
-            this.props.insertText(this.getState(), text, { color: 'red' });
+        const state = this.props
+        const { insertText, forceUpdate } = state
+        const insertText2 = () => {
+            return insertText(state, text, { color: 'red' });
         }
 
         if (this.compositionMode) {
@@ -174,24 +159,26 @@ class App extends Component {
 
             if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
                 e.preventDefault();
-                insertText()
+
+                insertText2()
                 return
             }
+            pipe(insertText2)
+                .pipe(forceUpdate)
 
-            insertText()
             return;
 
         }
         e.preventDefault()
 
-        insertText()
+        insertText2()
     }
     onCompositionStart = e => {
         e.preventDefault()
         this.compositionMode = true
 
         if (!this.selection.isCollapsed) {
-            this.props.backspaceCommand(this.getState())
+            this.props.backspaceCommand(this.props)
         }
     }
 
@@ -200,20 +187,18 @@ class App extends Component {
 
         const { content, contentKey } = this.props
         const { content: nextContent, contentKey: nextContentKey } = nextProps
-        console.log(is(nextContent, content))
-        return !is(nextContent, content) || nextContentKey !== contentKey
+        const check = !is(nextContent, content) || nextContentKey !== contentKey
+
+        if (check) {
+            return true;
+        }
+        this.forceSelection(nextProps)
+        return false;
 
     }
 
     componentDidUpdate() {
-
-        const { content, selection } = this.props
-        const { startKey, start } = selection
-        const block = content.getBlockForKey(startKey)
-        console.log(block.getText(), start)
-        setEditorSelection({ content, selection })
-
-
+        this.forceSelection()
     }
 
     componentWillUnmount() {
@@ -233,7 +218,6 @@ class App extends Component {
                 contentEditable={true} 
                  
                 onClick={this.onClick}
-                onMouseUp={this.onMouseUp}
                 onKeyDown={this.onKeyDown}
                 onKeyUp={this.onKeyUp}
                 onBeforeInput={this.onBeforeInput}

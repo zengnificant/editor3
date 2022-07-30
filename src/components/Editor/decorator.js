@@ -12,12 +12,16 @@ import {
     redoCommand,
     undoCommand,
     onClick,
+    onChange,
     insertText,
+    forceUpdate
 } from '@redux/actions/index.js'
 
 const mapStateToProps = state => {
     return state
 }
+
+
 export default connect(
     mapStateToProps,
     dispatch => bindActionCreators({
@@ -31,6 +35,8 @@ export default connect(
         redoCommand,
         undoCommand,
         insertText,
-        onClick
+        onClick,
+        onChange,
+        forceUpdate
     }, dispatch)
 )

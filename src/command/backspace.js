@@ -60,7 +60,19 @@ export const backspaceOnRange = (content, sel) => {
 
     const blockMap1 = content2.getBlockMap().takeUntil((_, k) => k === startKey).set(startKey, block)
 
-    const blockMap2 = content2.getBlockMap().skipUntil((_, k) => k === endKey).skip(1)
+
+
+    let blockMap2 = content2.getBlockMap().skipUntil((_, k) => k === endKey).skip(1)
+    let firstDepth = blockMap2.first() && blockMap2.first().getDepth()
+    if (firstDepth != 0) {
+        const shouldResetDepthOfBlockMap = blockMap2.takeUntil((_, k) => _.getDepth() == 0).map((v) => {
+            const depth = v.getDepth() - firstDepth
+            return v.set('depth', depth)
+        })
+        blockMap2 = blockMap2.merge(shouldResetDepthOfBlockMap)
+    }
+
+
     const blockMap = blockMap1.merge(blockMap2)
 
     const _content = content2.set('blockMap', blockMap)

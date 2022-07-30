@@ -1,8 +1,9 @@
 import { insertText } from '@src/transaction/insertText.js'
 import insertFragmentIntoContent from '@src/transaction/insertFragmentIntoContent.js'
 import { convertFromHTML } from '@convert/convertFromHTML.js'
+import { convertToHTML } from '@convert/convertToHTML.js'
 
-function handleOnPaste(e, { content, selection }, onChange) {
+function handleOnPaste(e, state) {
     e.preventDefault()
     const data = e.clipboardData
     const { types, files } = data
@@ -15,12 +16,13 @@ function handleOnPaste(e, { content, selection }, onChange) {
 
     if (types.length === 1 && (types[0] == 'Text' || types[0] == 'text/plain')) {
         const text = data.getData(types[0]);
-        if (typeof onChange === 'function') onChange(insertText(content, selection, text));
+        state.insertText(state, text)
         return;
     }
     if (isRichText(data)) {
         const fragment = convertFromHTML(data.getData('text/html'))
-        if (typeof onChange === 'function') onChange(insertFragmentIntoContent(content, selection, fragment));
+        const { content, selection } = state
+        state.onChange(state, insertFragmentIntoContent(content, selection, fragment));
         return;
     }
 }

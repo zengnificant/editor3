@@ -9,8 +9,9 @@ function handleOnKeyDown(e, state, keyBinding) {
 
     if (command) {
         e.preventDefault()
-        handleOnKeyCommand(command, state)
+        return handleOnKeyCommand(command, state)
     }
+    return state
 }
 
 

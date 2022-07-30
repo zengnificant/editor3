@@ -1,5 +1,4 @@
 function handleOnKeyCommand(command, state) {
-    const { content, selection } = state
     switch (command) {
         case 'redo':
             return state.redoCommand(state);
@@ -38,7 +37,7 @@ function handleOnKeyCommand(command, state) {
         case 'select-all':
             return state.selectAllCommand(state)
         default:
-            return;
+            return state;
     }
 }
 

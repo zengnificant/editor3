@@ -1,9 +1,12 @@
 import getFragmentContent from '@src/transaction/getFragmentContent.js'
 import { convertToHTML } from '@convert/convertToHTML.js'
 import { backspaceCommand } from '@src/command/backspace.js'
+import { pipe } from '@nifi/helpers/pipe.js'
 
-const handleOnCut = (e, { content, selection }, onChange) => {
-    console.log('handleOnCut')
+
+const handleOnCut = (e, state) => {
+    e.preventDefault()
+    const { content, selection } = state
     if (selection.isCollapsed) {
         return
     }
@@ -13,8 +16,7 @@ const handleOnCut = (e, { content, selection }, onChange) => {
     e.clipboardData.setData('text/html', html)
     e.clipboardData.setData('text/plain', text)
 
-
-    if (typeof onChange === 'function') onChange(backspaceCommand(content, selection))
+    state.backspaceCommand(state)
 
 }
 
