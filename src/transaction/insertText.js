@@ -14,7 +14,6 @@ export const insertTextOnCollapse = (content, sel, text, inlineStyles) => {
     const index = getIndexByOffset(block, start)
     const blockList = block.getList()
     let list = List(text.match(/./usg)).map((text => Meta.create({ text }).setIn(['decoratorTree', 0, 'inlineStyles'], OrderedMap(inlineStyles))))
-    console.log(list)
     const getlist = (list) => {
         return insertIntoList(blockList, list, index)
     }
