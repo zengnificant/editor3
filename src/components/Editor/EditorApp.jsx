@@ -81,9 +81,12 @@ class App extends Component {
 
 
 
-    acceptSelection = () => {
+    acceptSelection = (selection) => {
+        if (selection) {
+            this.selection = selection
+        }
         const gsel = window.getSelection()
-        this.selection = getEditorSelection(this.props, gsel)
+        this.selection = getEditorSelection(this.getCurrentState(), gsel)
     }
     forceSelection = (state) => {
         if (!state) state = this.props
@@ -95,8 +98,11 @@ class App extends Component {
     onClick = async (e) => {
         //避免cmd+A 再click的bug
         wait(() => {
+
             this.acceptSelection();
-            this.props.onClick(this.getCurrentState())
+            const state = this.getCurrentState()
+
+
         })
     }
 
@@ -128,6 +134,11 @@ class App extends Component {
 
         }
     }
+    onMouseUp = (e) => {
+        console.log('onMouseUp')
+        this.acceptSelection()
+        console.log(this.selection.toJS())
+    }
 
 
     onKeyDown = (e) => {
@@ -148,8 +159,9 @@ class App extends Component {
         const text = e.data
 
         if (!text) return;
-        const state = this.props
-        const { insertText, forceUpdate } = state
+        e.preventDefault()
+        const state = this.getCurrentState()
+        const { insertText, forceUpdate, forceUpdate2 } = state
         const insertText2 = () => {
             return insertText(state, text, { color: 'red' });
         }
@@ -157,19 +169,13 @@ class App extends Component {
         if (this.compositionMode) {
             this.compositionMode = false
 
-            if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-                e.preventDefault();
-
-                insertText2()
-                return
-            }
-            pipe(insertText2)
-                .pipe(forceUpdate)
+            pipe(insertText2())
+                .pipe(forceUpdate2)
 
             return;
 
         }
-        e.preventDefault()
+
 
         insertText2()
     }
@@ -187,7 +193,7 @@ class App extends Component {
 
         const { content, contentKey } = this.props
         const { content: nextContent, contentKey: nextContentKey } = nextProps
-        const check = !is(nextContent, content) || nextContentKey !== contentKey
+        const check = !Content.is(nextContent, content) || contentKey != nextContentKey
 
         if (check) {
             return true;
@@ -210,6 +216,7 @@ class App extends Component {
 
     render() {
         const { content, contentKey } = this.props
+        console.log('contentKey ', contentKey)
         return <EditorStyled>
         <div className='EditorContainer' >
           <div
@@ -220,6 +227,7 @@ class App extends Component {
                 onClick={this.onClick}
                 onKeyDown={this.onKeyDown}
                 onKeyUp={this.onKeyUp}
+                onMouseUp={this.onMouseUp}
                 onBeforeInput={this.onBeforeInput}
                 onCompositionStart={this.onCompositionStart}
                 onCopy={this.onCopy}

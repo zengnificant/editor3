@@ -5,7 +5,7 @@ import renderInline from './renderInline.jsx'
 import splitList from '@nifi/utils/splitList.js'
 
 import { List, is } from 'immutable'
-
+import EditorBlock from './EditorBlock.jsx'
 
 const convertBlocks = blocks => {
     return splitList(blocks, block => {
@@ -48,34 +48,31 @@ function getNewList(list) {
 }
 
 
-const renderLi = (block, i) => {
-    const dataKeyOBJ = {
-        [BLOCK_KEY_NAME]: block.getKey()
-    }
-    const children = block.getChildren();
-    const list = block.getList()
 
-    return <li className="EditorBlock" data-block-depth={block.getDepth()} key={block.getKey()} {...dataKeyOBJ}>
-             {renderInline(block)}
-             {children?renderLiList(children):null}
-          </li>
+
+const renderBlock = (block) => {
+    const blockKey = block.getKey()
+    return <EditorBlock block={block}  key={block.getKey()}/>
+
+
+
 }
 
 
-const renderLiList = (list) => {
+export const renderLiList = (list) => {
     let list2 = convertLi(list)
     if (is(list2, list)) {
 
         const Tag = list.get(0).getTag()
         return <Tag key={Tag+list.get(0).getKey()}>
-      {list.map((block,i)=>renderLi(block,i))}
+      {list.map(renderBlock)}
     </Tag>
     }
     return <Fragment>
      {list2.map(list=>{
         const Tag = list.get(0).getTag()
     return <Tag key={Tag+list.get(0).getKey()}>
-      {list.map((block,i)=>renderLi(block,i))}
+      {list.map(renderBlock)}
     </Tag>
 
     })}
@@ -104,15 +101,8 @@ class App extends Component {
 }
 
 
-const renderBlock = (block) => {
-    const dataKeyOBJ = {
-        [BLOCK_KEY_NAME]: block.getKey()
-    }
-    const Tag = block.getTag()
-    return <Tag className="EditorBlock" key={block.getKey()} {...dataKeyOBJ}>
-{renderInline(block)}
-</Tag>
-}
+
+
 
 
 

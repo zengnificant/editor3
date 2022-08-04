@@ -11,6 +11,7 @@ const defaultRecord = {
     tag: 'div',
     depth: 0,
     children: null,
+    componentKey: 0
 
 };
 
@@ -33,7 +34,7 @@ export default class Block extends StupidRecord(defaultRecord) {
     static create(data, shouldReserveKey = false) {
         if (!data) return Block.createFromText()
         let block = new Block(data)
-
+        block = block.set('componentKey', 0)
         if (!block.getKey()) {
             return block.set('key', createBlockKey())
         }
@@ -41,6 +42,7 @@ export default class Block extends StupidRecord(defaultRecord) {
             return block
         }
         return block.set('key', createBlockKey())
+
     }
 
     createEmptyBlock() {
@@ -59,7 +61,7 @@ export default class Block extends StupidRecord(defaultRecord) {
         let list1 = List.isList(data) ? data : List(data)
         let list = list1.size ? list1.map(el => Meta.create(el)) : list1.push(Meta.create())
 
-        return new Block({ key, list })
+        return Block.create({ key, list })
 
     }
 

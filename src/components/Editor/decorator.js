@@ -14,7 +14,8 @@ import {
     onClick,
     onChange,
     insertText,
-    forceUpdate
+    forceUpdate,
+    forceUpdate2
 } from '@redux/actions/index.js'
 
 const mapStateToProps = state => {
@@ -37,6 +38,7 @@ export default connect(
         insertText,
         onClick,
         onChange,
-        forceUpdate
+        forceUpdate,
+        forceUpdate2
     }, dispatch)
 )

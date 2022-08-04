@@ -1,5 +1,7 @@
 import React, { Component, Fragment, createRef } from 'react'
 import ReactDOM from 'react-dom'
+import { renderToString } from 'react-dom/server'
+
 import getInlineFromBlock from '@src/immutable/block/getInlineList.js'
 import { Meta, Decorator } from '@src/immutable/index.js'
 import { Map } from 'immutable'
@@ -63,13 +65,14 @@ const renderInline = (block) => {
             </span>
     }
 
+
     const inlines = getInlineFromBlock(block)
     const testInlines = dealWithInlineList(inlines)
 
-    return <Fragment>
-        {renderChangedInlines(testInlines)}
-    </Fragment>
 
+    return <Fragment>
+    {renderChangedInlines(testInlines)}
+   </Fragment>
 
 }
 
