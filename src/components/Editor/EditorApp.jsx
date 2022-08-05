@@ -135,19 +135,13 @@ class App extends Component {
         }
     }
     onMouseUp = (e) => {
-        console.log('onMouseUp')
         this.acceptSelection()
-        console.log(this.selection.toJS())
     }
 
 
     onKeyDown = (e) => {
         handleOnKeyDown(e, this.getCurrentState())
-        // if (is(state.content, _lastState.content) && !is(state.selection, _lastState.selection)) {
-        //     setEditorSelection(state)
-        // }
-        // console.log(state.selection)
-        // this.acceptSelection()
+
     }
 
 
@@ -216,7 +210,6 @@ class App extends Component {
 
     render() {
         const { content, contentKey } = this.props
-        console.log('contentKey ', contentKey)
         return <EditorStyled>
         <div className='EditorContainer' >
           <div

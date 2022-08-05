@@ -4,7 +4,11 @@ export function pipe() {
     const state = this;
 
     const args = [...arguments]
-    const [fn, selector = state => state.payload] = args;
+    const [fn, selector = state => {
+        if (state) {
+            return state.payload
+        }
+    }] = args;
     let ret;
     if (isFunction(fn)) {
         ret = state ? fn(state) : fn()

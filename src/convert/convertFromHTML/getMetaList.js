@@ -74,36 +74,25 @@ const getMetaListForText = (node) => {
     if (!isTextNode(node)) {
         return;
     }
+    let value=getNodeValue(node);
+    if(!value){
+        return getEmptyMetaList()
+    }
     const pNode = node.parentNode
     const nodeName = getNodeName(pNode)
     const tag = getValidTag(nodeName)
     const data = getNodeData(pNode)
     const baseDecorator = Decorator.create({ tag }).merge(data)
     const decoratorTree = getDecoratorTree(pNode).unshift(baseDecorator)
-    const MetaList = getNodeValue(node).match(/./usg).map(e =>
+    const MetaList = value.match(/./usg).map(e =>
         Meta.create({ text: e, decoratorTree }))
     return List().concat(MetaList)
-}
-const getMetaListForBr = (node) => {
-    if (getNodeName(node) !== 'br') return;
-    const pNode = node.parentNode
-    const nodeName = getNodeName(pNode)
-    const tag = getValidTag(nodeName)
-    const data = getNodeData(pNode)
-    const baseDecorator = Decorator.create({ tag }).merge(data)
-    const decoratorTree = getDecoratorTree(pNode).unshift(baseDecorator)
-    const meta = Meta.create({ decoratorTree })
-    return List().push(meta)
 }
 
 
 const getEmptyMetaList = () => {
 
-    const decorator = Decorator.create({ tag: 'span' })
-    const baseDecorator = Decorator.create({ tag: 'br' })
-    const decoratorTree = List().push(baseDecorator, decorator)
-    const meta = Meta.create({ decoratorTree })
-    return List().push(meta)
+    return List()
 }
 
 const getMetaListForIMG = (node) => {
@@ -164,7 +153,6 @@ function getMetaList(node) {
     if (isIMG(node)) {
         return getMetaListForIMG(node)
     }
-    if (isBr(node)) return getMetaListForBr(node)
     return getEmptyMetaList()
 
 }
