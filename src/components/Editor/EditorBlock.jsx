@@ -17,6 +17,13 @@ const mapStateToProps = (state, { block }) => {
 
 
 
+const getTagForBlockTag = (tag) => {
+    if (tag == 'ul' || tag == 'ol') {
+        return 'li'
+    }
+    return tag
+}
+
 
 
 class App extends Component {
@@ -43,8 +50,8 @@ class App extends Component {
 
         const children = block.getChildren();
         const list = block.getList()
-        const Tag = block.getTag()
-        return <Tag className="EditorBlock" data-text='false' data-block-depth={block.getDepth()}  key={getKey()} {...dataKeyOBJ}>
+        const Tag = getTagForBlockTag(block.getTag())
+        return <Tag className="EditorBlock"  data-block-depth={block.getDepth()}  key={getKey()} {...dataKeyOBJ}>
              {renderInline(block)}
              {children?renderLiList(children):null}
           </Tag>
