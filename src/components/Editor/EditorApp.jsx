@@ -58,8 +58,8 @@ const isSafari = isBrowser("Safari")
 // //console.log(Content.is(content, content1))
 
 
-const key = content.getFirstBlock().getKey()
-const selection = Selection.createByKey(key)
+// const key = content.getFirstBlock().getKey()
+// const selection = Selection.createByKey(key)
 
 
 const wait = (fn) => setTimeout(fn, 0)
