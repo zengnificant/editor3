@@ -3,9 +3,7 @@ node_modules
 dist
 dist-ssr
 *.local
-redux
-bug
-yarn
+bug.md
 
 gulpfile.js
 
