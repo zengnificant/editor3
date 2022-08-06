@@ -13,3 +13,5 @@ block节点为空的 safari 中无效。 因为默认行为是删除了block节�
 
 5 onClick 之前cmd+A回导致window.getSelection()状态还是全选状态。 因此 在onClic函数体内
 都使用setTimeout(fn,0),这时window.getSelection()状态恢复。
+
+6. 当前是每次更新后强制获得选择区域，但是当一次性进行多次操作时，只想最后操作完成时更新 选择区域怎么办？

@@ -5,3 +5,14 @@ dist-ssr
 *.local
 redux
 bug
+yarn
+
+gulpfile.js
+
+
+.babelrc
+
+*.sh
+
+yarn-error.log
+yarn.lock

@@ -1,6 +1,9 @@
 {
   "name": "editor3",
   "version": "0.0.0",
+  "author": "Zengnificant<1269580641@qq.com>",
+  "license": "MIT",
+
   "scripts": {
     "dev": "vite",
     "build": "vite build",
