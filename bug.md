@@ -1,6 +1,9 @@
+
 1.  `\n<ul><li>test</li></ul>`  这种结构，chrome下 选择区域在列表最开始位置，compositionMode 时输入文字有奇怪表现  
 
 2. compositionMode 时输入文字有奇怪表现   解决方法  给根节点设置key值,先强制更新key。同时  preventDefault() 。
+
+block节点为空的 safari 中无效。 因为默认行为是删除了block节点。同时 EditorContent 组件是Fragment  导致更新key对safari无效。当把key设置到父组件的div上后生效。
 
 
 

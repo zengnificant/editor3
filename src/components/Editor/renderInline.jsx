@@ -61,8 +61,9 @@ function renderChangedInline(inline, k) {
 const renderInline = (block) => {
     if (block.isEmpty()) {
         return <span {...getIndexData(0)}>
-            <br  data-text={true}/>
+            <br />
             </span>
+
     }
 
 

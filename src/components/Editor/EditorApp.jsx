@@ -38,22 +38,24 @@ import decorator from './decorator.js'
 import initState from '@redux/store/initState.js'
 
 import { pipe } from '@nifi/helpers/pipe.js'
+import { isBrowser } from '@nifi/utils/ua.js'
+
 
 const beautify = js => beautifyjs.js(JSON.stringify(js))
 
-
+const isSafari = isBrowser("Safari")
 
 
 // const content = doc2
 //const rawContent = beautify(convertToRaw(content))
 
-const html = `<a class="ha halal" style="color:red;font-size:20px" href="#">   t t <b style="color:green;font-size:30px;">nice</b></a><div>行内块<u>行内</u></div> 哈哈<span>t2</span><div>我很饿</div>我<img src="/src/logo.svg"/><li>我爱理<ul><li>爱理</ul><ul><li>爱理<ul><li>爱理<ul><li>爱理</li></ul><ol><li>爱理</li></ol><ol><li>爱理</li></ol></li></ul></li></ul></li>`
-var content = convertFromHTML(html)
-//var content1 = convertFromRaw(raw)
-const rawContent = beautify(convertToRaw(content))
-console.log(rawContent)
-// 
-//console.log(Content.is(content, content1))
+// const html = `<a class="ha halal" style="color:red;font-size:20px" href="#">   t t <b style="color:green;font-size:30px;">nice</b></a><div>行内块<u>行内</u></div> 哈哈<span>t2</span><div>我很饿</div>我<img src="/src/logo.svg"/><li>我爱理<ul><li>爱理</ul><ul><li>爱理<ul><li>爱理<ul><li>爱理</li></ul><ol><li>爱理</li></ol><ol><li>爱理</li></ol></li></ul></li></ul></li>`
+// var content = convertFromHTML(html)
+// //var content1 = convertFromRaw(raw)
+// const rawContent = beautify(convertToRaw(content))
+// console.log(rawContent)
+// // 
+// //console.log(Content.is(content, content1))
 
 
 const key = content.getFirstBlock().getKey()
@@ -155,23 +157,42 @@ class App extends Component {
         if (!text) return;
         e.preventDefault()
         const state = this.getCurrentState()
-        const { insertText, forceUpdate, forceUpdate2 } = state
-        const insertText2 = () => {
+        const { insertText, forceUpdate, forceUpdate2 } = this.props
+        const insertText2 = (state) => {
             return insertText(state, text, { color: 'red' });
         }
 
         if (this.compositionMode) {
             this.compositionMode = false
 
-            pipe(insertText2())
-                .pipe(forceUpdate2)
+            const dealInsert = (state) => {
 
+                const myForceUpdateForSafari = (state) => {
+
+                    if (!isSafari) return state.forceUpdate2(state);
+                    const { content, selection } = state;
+                    const { startKey } = selection
+                    const block = content.getBlockForKey(startKey)
+                    if (block.isEmpty()) {
+                        return state.forceUpdate(state)
+                    }
+                    return state.forceUpdate2(state)
+                }
+                const myForceUpdate = isSafari ? myForceUpdateForSafari : forceUpdate2
+
+                pipe(myForceUpdate(state))
+                    .pipe((state) => insertText2(state))
+
+            }
+            dealInsert(state)
+
+            //
             return;
 
         }
 
 
-        insertText2()
+        insertText2(state)
     }
     onCompositionStart = e => {
         e.preventDefault()
@@ -181,6 +202,8 @@ class App extends Component {
             this.props.backspaceCommand(this.props)
         }
     }
+
+
 
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -222,14 +245,15 @@ class App extends Component {
                 onKeyUp={this.onKeyUp}
                 onMouseUp={this.onMouseUp}
                 onBeforeInput={this.onBeforeInput}
+                onCompositionEnd={this.onCompositionEnd}
                 onCompositionStart={this.onCompositionStart}
                 onCopy={this.onCopy}
                 onCut={this.onCut}
                 onPaste={this.onPaste}
-               
+                key={'EditorContent-'+contentKey}
            
           >
-          <EditorContent content={content}  key={'EditorContent-'+contentKey}/>
+          <EditorContent content={content}  ref={this.contentRef}  />
           </div>
 
         </div>

@@ -24,22 +24,19 @@ const getPoint = (content, blockKey, offsetX) => {
 
     return [baseNode, offset]
 
+
 }
 
-
+//TODO:try catch;
 const setSelection = ({ content, selection }) => {
     const { a, b, aKey, bKey, isBackward } = selection.toJS()
     const gsel = window.getSelection();
     gsel.removeAllRanges();
     const range = document.createRange();
-
     const PointA = getPoint(content, aKey, a)
-
-
     const PointB = getPoint(content, bKey, b)
     range.setStart(...PointA);
     range.setEnd(...PointB);
-
     gsel.addRange(range);
     return selection;
 }
