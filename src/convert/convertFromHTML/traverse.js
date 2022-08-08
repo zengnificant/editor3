@@ -162,7 +162,6 @@ function traverseNode(node, depth = 0) {
 }
 
 
-const html = `<a class="ha halal" style="color:red;font-size:20px" href="#">   t t <div>行内块<u>行内</u></div> 哈哈<span>t2</span></a><div>我很饿</div>我<img src="/src/logo.svg"/><li>我爱理<ul><li>爱理</ul><ul><li>爱理<ul><li>爱理<ul><li>爱理</li></ul><ol><li>爱理</li></ol><ol><li>爱理</li></ol></li></ul></li></ul></li>`
 
 
 export default traverseHTML

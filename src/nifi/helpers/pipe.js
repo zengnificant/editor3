@@ -5,9 +5,10 @@ export function pipe() {
 
     const args = [...arguments]
     const [fn, selector = state => {
-        if (state) {
+        if (state && state.payload) {
             return state.payload
         }
+        return state
     }] = args;
     let ret;
     if (isFunction(fn)) {

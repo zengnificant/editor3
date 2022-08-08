@@ -34,5 +34,8 @@ color:#000;
   position: relative;
  }
 & img{width: 200px;}
+
+
+& .EditorBar .active-color{color:#00a5fe;}
 `
 export default Styled

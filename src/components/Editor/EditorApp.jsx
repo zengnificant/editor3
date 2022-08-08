@@ -41,6 +41,9 @@ import { pipe } from '@nifi/helpers/pipe.js'
 import { isBrowser } from '@nifi/utils/ua.js'
 
 
+
+
+
 const beautify = js => beautifyjs.js(JSON.stringify(js))
 
 const isSafari = isBrowser("Safari")
@@ -210,7 +213,7 @@ class App extends Component {
 
         const { content, contentKey } = this.props
         const { content: nextContent, contentKey: nextContentKey } = nextProps
-        const check = !Content.is(nextContent, content) || contentKey != nextContentKey
+        const check = !is(nextContent, content) || contentKey != nextContentKey
 
         if (check) {
             return true;

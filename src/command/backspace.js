@@ -1,8 +1,6 @@
 import getIndexByOffset from '@src/immutable/block/getIndexByOffset.js'
 import { isSelectionAtStartOfContent, isSelectionAtStartOfBlock } from './check.js'
 
-
-
 const backspaceOnCollapse = (content, sel) => {
     const { start, startKey } = sel
     const block = content.getBlockForKey(startKey)
@@ -63,20 +61,11 @@ export const backspaceOnRange = (content, sel) => {
 
 
     let blockMap2 = content2.getBlockMap().skipUntil((_, k) => k === endKey).skip(1)
-    let firstDepth = blockMap2.first() && blockMap2.first().getDepth()
-    if (firstDepth != 0) {
-        const shouldResetDepthOfBlockMap = blockMap2.takeUntil((_, k) => _.getDepth() == 0).map((v) => {
-            const depth = v.getDepth() - firstDepth
-            return v.set('depth', depth)
-        })
-        blockMap2 = blockMap2.merge(shouldResetDepthOfBlockMap)
-    }
 
 
-    const blockMap = blockMap1.merge(blockMap2)
+    const retContent = content2.set('blockMap', blockMap1.merge(blockMap2)).normalizeDepths()
 
-    const _content = content2.set('blockMap', blockMap)
-    return { content: _content, selection: sel2 }
+    return { content: retContent, selection: sel2 }
 
 }
 

@@ -4,6 +4,7 @@ import { StupidRecord } from '@nifi/helpers/StupidRecord.js'
 import Block from '@src/immutable/Block.js'
 import BlockMapBuilder from './BlockMapBuilder.js'
 
+import normalizeDepths from '@src/immutable/content/normalizeDepths.js'
 
 
 
@@ -27,10 +28,15 @@ export default class Content extends StupidRecord(defaultRecord) {
         return this.setIn(['blockMap', block.getKey()], block)
     }
 
+
+
     resetKeys() {
         const blocks = this.getBlocks()
         const blockMap = BlockMapBuilder.createFromArray(blocks)
         return this.set('blockMap', blockMap)
+    }
+    normalizeDepths() {
+        return normalizeDepths(this)
     }
 
 

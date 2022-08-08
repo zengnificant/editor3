@@ -59,7 +59,7 @@ const renderBlock = (block) => {
 }
 
 
-export const renderLiList = (list) => {
+export const renderLiList = (list, i) => {
     let list2 = convertLi(list)
     if (is(list2, list)) {
 
@@ -68,7 +68,7 @@ export const renderLiList = (list) => {
       {list.map(renderBlock)}
     </Tag>
     }
-    return <Fragment>
+    return <Fragment key={'list'+i}>
      {list2.map(list=>{
         const Tag = list.get(0).getTag()
     return <Tag key={Tag+list.get(0).getKey()}>
@@ -94,9 +94,9 @@ class App extends Component {
             .map(el => getNewList(el))
 
 
-        return <Fragment>
-        {changedBlocks.map((el,i)=>List.isList(el)?renderLiList(el):renderBlock(el))}
-        </Fragment>
+        return <div>
+        {changedBlocks.map((el,i)=>List.isList(el)?renderLiList(el,i):renderBlock(el))}
+        </div>
     }
 }
 
