@@ -1,23 +1,26 @@
 import React, { Component, Fragment, createRef, useRef, useState, useEffect } from 'react'
 
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import decorator from '@components/Editor/decorator.js'
+import toggleBlock from '@src/control/toggleBlock.js'
+import styled from 'styled-components'
 
-import { BLOCK_KEY_NAME } from '@constants/arg.js'
-import { forceUpdate2 } from '@redux/actions/index.js'
-import { is } from 'immutable'
-
+const Styled = styled.div `
+ line-height: 2;
+ padding: 0 20px;
+`
 class App extends Component {
+    onClick = (e) => {
+        toggleBlock(this.props.getState(), 'h1')
+    }
 
     render() {
 
-        return <div>
-
-        </div>
+        return <Styled onClick={this.onClick}>
+             h1
+        </Styled>
     }
 
 }
 
-const decorator = connect(mapStateToProps)
 
-export default decorator(App)
+export default App

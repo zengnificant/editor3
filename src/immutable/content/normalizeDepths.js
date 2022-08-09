@@ -1,10 +1,6 @@
 import { List, is, OrderedMap } from 'immutable'
-import { Meta } from '@src/immutable/index.js'
 import splitList from '@nifi/utils/splitList.js'
-
 import { sameTypeOfBlocks } from '@src/settings/index.js'
-
-
 
 
 const normalize = (content) => {
@@ -21,14 +17,17 @@ const normalize = (content) => {
         if (!beforeBlock) {
             return false;
         }
+        console.log(isNormalDepth(beforeBlock, block), beforeBlock, block)
 
         return isNormalDepth(beforeBlock, block)
     }
 
-    const filterblocks = splitList(blocks, block => !condition(block)).filter(el => !List.isList(el))
-    if (!filterblocks.size) {
+    const filterblocks = splitList(blocks, block => !condition(block))
+        .filter(el => !List.isList(el))
+    if (!filterblocks.size || is(filterblocks, blocks)) {
         return content;
     }
+
 
     const fixedBlocksList = filterblocks.map(block => {
         const ret1 = blocks.skipUntil(b => is(b, block))
@@ -51,17 +50,21 @@ const normalize = (content) => {
 function isSameTypeTag(a, b) {
     let tagA = a.getTag()
     let tagB = b.getTag()
+
     if (tagA === tagB) return true
-    return !!sameTypeOfBlocks.find(arr => {
+
+    const ret = sameTypeOfBlocks.find(arr => {
         return Array.isArray(arr) && arr.includes(tagA) && arr.includes(tagB)
     })
+    console.log(tagA, tagB, !!ret)
+    return !!ret
 }
 
 function isNormalDepth(a, b) {
-    let compare = isSameTypeTag(a, b) ? 1 : 0
+    if (!isSameTypeTag(a, b)) return false;
     const depthA = a.getDepth()
     const depthB = b.getDepth()
-    if (depthB - depthA <= compare) return true;
+    if (depthB - depthA <= 1) return true;
     return false;
 }
 

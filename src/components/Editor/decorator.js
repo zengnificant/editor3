@@ -18,7 +18,7 @@ import {
     forceUpdate2
 } from '@redux/actions/index.js'
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return state
 }
 

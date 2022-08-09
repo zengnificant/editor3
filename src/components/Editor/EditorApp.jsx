@@ -40,7 +40,7 @@ import initState from '@redux/store/initState.js'
 import { pipe } from '@nifi/helpers/pipe.js'
 import { isBrowser } from '@nifi/utils/ua.js'
 
-
+import H1 from '@components/Editor/EditorBar/H1/index.jsx'
 
 
 
@@ -80,7 +80,8 @@ class App extends Component {
 
     }
     getCurrentState() {
-        const selection = this.selection
+
+        const selection = this.selection ? this.selection : this.props.selection
         return { ...this.props, selection }
     }
 
@@ -222,7 +223,9 @@ class App extends Component {
         return false;
 
     }
-
+    componentDidMount() {
+        this.selection = this.props.selection
+    }
     componentDidUpdate() {
         this.forceSelection()
     }
@@ -238,6 +241,7 @@ class App extends Component {
         const { content, contentKey } = this.props
         return <EditorStyled>
         <div className='EditorContainer' >
+          <H1 getState={()=>this.getCurrentState()}/>
           <div
                 className='EditorContent' 
                 ref={this.editorRef}

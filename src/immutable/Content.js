@@ -5,8 +5,8 @@ import Block from '@src/immutable/Block.js'
 import BlockMapBuilder from './BlockMapBuilder.js'
 
 import normalizeDepths from '@src/immutable/content/normalizeDepths.js'
-
-
+import throwError from '@nifi/utils/throwError.js'
+import getBlockList from './content/getBlockList.js'
 
 const defaultRecord = {
     blockMap: OrderedMap()
@@ -21,8 +21,8 @@ export default class Content extends StupidRecord(defaultRecord) {
         }
         return blockMap.map(block => block.getText()).join('\n')
     }
-    getBlocks() {
-        return this.getBlockMap().valueSeq().toList()
+    getBlocks(selection) {
+        return getBlockList(this, selection)
     }
     updateBlock(block) {
         return this.setIn(['blockMap', block.getKey()], block)
@@ -68,6 +68,8 @@ export default class Content extends StupidRecord(defaultRecord) {
             .skip(1)
             .first();
     }
+
+
 
 
     addBlockListBeforeKey(key, toBeAddedBlockList) {

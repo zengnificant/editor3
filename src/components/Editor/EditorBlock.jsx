@@ -40,7 +40,6 @@ class App extends Component {
     render() {
         const { block, keyMap } = this.props
 
-
         const blockKey = block.getKey()
 
         const dataKeyOBJ = {
