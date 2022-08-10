@@ -12,7 +12,7 @@ const toggleBlock = (state, tag = 'div') => {
 
     const blockMap2 = OrderedMap(blocks.map(block => block.set('tag', retTag)).map(b => [b.getKey(), b]))
     content = content.set('blockMap', blockMap.merge(blockMap2)).normalizeDepths()
-    return state.onChange({ ...state, content })
+    return state.onChange(state, { content })
 
 }
 

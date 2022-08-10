@@ -18,7 +18,7 @@ export const addPureMark = (state, mark, opts = {}) => {
     if (startKey === endKey) {
         blockA = addMarkForBlock(blockA, mark, opts, [start, end])
         content = content.updateBlock(blockA)
-        return state.onChange({ ...state, content })
+        return state.onChange(state, { content })
 
     }
     let blocks = content.getBlocks(selection)
@@ -29,7 +29,7 @@ export const addPureMark = (state, mark, opts = {}) => {
     })
 
     content = content.updateBlocks(blocks)
-    return state.onChange({ ...state, content })
+    return state.onChange(state, { content })
 
 }
 
@@ -38,7 +38,6 @@ const addMarkForMeta = (meta, mark, opts) => {
     const decorator = Decorator.create({ tag: mark, ...opts })
     const decoratorTree = meta.getDecoratorTree()
     const findOne = decoratorTree.find(d => d.getTag() === decorator.getTag())
-    console.log(findOne)
     if (findOne) {
         let index = decoratorTree.findIndex(decorator => decorator === findOne);
         let newOne = findOne.merge(decorator)

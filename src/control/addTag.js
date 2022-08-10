@@ -1,4 +1,4 @@
-const removeMark = (state, tag) => {
+const removeTag = (state, tag) => {
     let { selection, content } = state;
     const { isCollapsed } = selection;
     if (isCollapsed) return state.onChange(state);
@@ -10,7 +10,7 @@ const removeMark = (state, tag) => {
     if (startKey === endKey) {
         blockA = removeTagForBlock(blockA, tag, [start, end])
         content = content.updateBlock(blockA)
-        return state.onChange(state, { content })
+        return state.onChange({ ...state, content })
 
     }
     let blocks = content.getBlocks(selection)
@@ -21,7 +21,7 @@ const removeMark = (state, tag) => {
     })
 
     content = content.updateBlocks(blocks)
-    return state.onChange(state,{ content })
+    return state.onChange({ ...state, content })
 
 }
 
@@ -55,4 +55,4 @@ const removeTagForBlock = (block, tag, range = [0, 0]) => {
 
 
 
-export default removeMark
+export default removeTag
