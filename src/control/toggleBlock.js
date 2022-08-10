@@ -6,7 +6,6 @@ const toggleBlock = (state, tag = 'div') => {
     let { selection, content } = state;
 
     const blocks = content.getBlocks(selection)
-    console.log(blocks)
     const blockMap = content.getBlockMap()
 
     const retTag = getTag(lastTag, tag)

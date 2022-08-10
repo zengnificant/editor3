@@ -29,6 +29,9 @@ color:#000;
   & .EditorContent[contenteditable="true"]{
      -webkit-user-modify: read-write-plaintext-only;  
   }
+  & .EditorBar{
+    display: flex;
+  }
 
  & .EditorBlock{
   position: relative;

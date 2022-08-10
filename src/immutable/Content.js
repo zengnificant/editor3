@@ -27,6 +27,10 @@ export default class Content extends StupidRecord(defaultRecord) {
     updateBlock(block) {
         return this.setIn(['blockMap', block.getKey()], block)
     }
+    updateBlocks(blocks) {
+        const blockMap = OrderedMap(blocks.map(b => [b.getKey(), b]))
+        return this.set('blockMap', this.getBlockMap().merge(blockMap))
+    }
 
 
 

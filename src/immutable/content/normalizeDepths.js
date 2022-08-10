@@ -53,11 +53,9 @@ function isSameTypeTag(a, b) {
 
     if (tagA === tagB) return true
 
-    const ret = sameTypeOfBlocks.find(arr => {
+    return !!sameTypeOfBlocks.find(arr => {
         return Array.isArray(arr) && arr.includes(tagA) && arr.includes(tagB)
     })
-    console.log(tagA, tagB, !!ret)
-    return !!ret
 }
 
 function isNormalDepth(a, b) {

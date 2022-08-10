@@ -1,4 +1,4 @@
-import { Map, OrderedSet, OrderedMap, fromJS, List } from 'immutable'
+import { Map, OrderedSet, OrderedMap, fromJS, List, is } from 'immutable'
 import { StupidRecord } from '@nifi/helpers/StupidRecord.js'
 import { isString, isObject } from '@nifi/utils/isTypeUtils.js'
 import Decorator from './Decorator.js'
@@ -12,12 +12,15 @@ export default class Meta extends StupidRecord(defaultRecord) {
 
     get size2() {
         const a = this.getText().length;
-        const b = this.getDecoratorTree().first().size2
+        const b = this.decorator.size2
         return a + b
     }
     get decorator() {
         return this.getDecoratorTree().first()
     }
+
+
+
     static isMeta(any) {
         return any instanceof Meta
     }

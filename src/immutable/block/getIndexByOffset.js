@@ -1,5 +1,3 @@
-import { List, is } from 'immutable'
-import getInlineList from './getInlineList.js'
 const sumFn = (list) => {
     return list.reduce((a, b) => a + b)
 }

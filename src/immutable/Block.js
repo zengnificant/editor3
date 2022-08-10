@@ -5,6 +5,9 @@ import { StupidRecord } from '@nifi/helpers/StupidRecord.js'
 import createKey from '@nifi/helpers/createKey.js'
 import Meta from './Meta.js'
 import { isString, isObject } from '@nifi/utils/isTypeUtils.js'
+import getInlineByOffset from '@src/immutable/block/getInlineByOffset.js'
+import getIndexByOffset from '@src/immutable/block/getIndexByOffset.js'
+
 const defaultRecord = {
     key: undefined,
     list: List(),
@@ -73,9 +76,7 @@ export default class Block extends StupidRecord(defaultRecord) {
 
         return Block.create({ list })
     }
-    getMetaByIndex(index) {
-        return this.getList().get(index)
-    }
+
     resetKey() {
         return this.set('key', createBlockKey())
     }
@@ -104,5 +105,7 @@ export default class Block extends StupidRecord(defaultRecord) {
         return this.getList().map(el => el.getText()).join('')
     }
 
-
+    getIndexByOffset(offset) {
+        return getIndexByOffset(this, offset)
+    }
 }

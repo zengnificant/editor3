@@ -42,6 +42,8 @@ import { isBrowser } from '@nifi/utils/ua.js'
 
 import H1 from '@components/Editor/EditorBar/H1/index.jsx'
 
+import RemoveLink from '@components/Editor/EditorBar/RemoveLink/index.jsx'
+import AddLink from '@components/Editor/EditorBar/AddLink/index.jsx'
 
 
 const beautify = js => beautifyjs.js(JSON.stringify(js))
@@ -79,7 +81,7 @@ class App extends Component {
 
 
     }
-    getCurrentState() {
+    getCurrentState = () => {
 
         const selection = this.selection ? this.selection : this.props.selection
         return { ...this.props, selection }
@@ -241,7 +243,11 @@ class App extends Component {
         const { content, contentKey } = this.props
         return <EditorStyled>
         <div className='EditorContainer' >
-          <H1 getState={()=>this.getCurrentState()}/>
+          <div className='EditorBar'>
+            <H1 getState={this.getCurrentState}/>
+            <RemoveLink getState={this.getCurrentState}/>
+            <AddLink getState={this.getCurrentState}/>
+          </div>
           <div
                 className='EditorContent' 
                 ref={this.editorRef}

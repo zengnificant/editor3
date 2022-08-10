@@ -21,3 +21,5 @@ export function pipe() {
     return { ...ret, pipe: pipe.bind(ret) }
 
 }
+
+export default pipe
