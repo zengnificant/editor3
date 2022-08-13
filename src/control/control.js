@@ -1,5 +1,4 @@
-import currying from './currying.js'
-const defaultFn = (metaFn, state, ...args) => {
+const control = metaFn => (state, ...args) => {
 
     let { selection, content } = state;
     const { isCollapsed } = selection;
@@ -38,7 +37,6 @@ const defaultFn = (metaFn, state, ...args) => {
     return state.onChange(state, { content })
 }
 
-const control = currying(defaultFn)
 
 
 export default control
