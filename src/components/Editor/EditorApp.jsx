@@ -44,6 +44,8 @@ import H1 from '@components/Editor/EditorBar/H1/index.jsx'
 
 import RemoveLink from '@components/Editor/EditorBar/RemoveLink/index.jsx'
 import AddLink from '@components/Editor/EditorBar/AddLink/index.jsx'
+import AddInlineStyle from '@components/Editor/EditorBar/AddInlineStyle/index.jsx'
+import RemoveInlineStyle from '@components/Editor/EditorBar/RemoveInlineStyle/index.jsx'
 
 
 const beautify = js => beautifyjs.js(JSON.stringify(js))
@@ -247,6 +249,8 @@ class App extends Component {
             <H1 getState={this.getCurrentState}/>
             <RemoveLink getState={this.getCurrentState}/>
             <AddLink getState={this.getCurrentState}/>
+            <AddInlineStyle getState={this.getCurrentState}/>
+             <RemoveInlineStyle getState={this.getCurrentState}/>
           </div>
           <div
                 className='EditorContent' 

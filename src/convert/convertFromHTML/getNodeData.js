@@ -5,13 +5,13 @@ import transformCssText from './transformCssText.js'
 function getNodeData(node) {
     if (!node) {
         const className = OrderedSet()
-        const inlineStyles = OrderedMap()
-        return Map({ className, inlineStyles })
+        const inlineStyle = OrderedMap()
+        return Map({ className, inlineStyle })
 
     }
     const className = OrderedSet([...node.classList])
-    const inlineStyles = OrderedMap(transformCssText(node.style.cssText))
-    return Map({ className, inlineStyles })
+    const inlineStyle = OrderedMap(transformCssText(node.style.cssText))
+    return Map({ className, inlineStyle })
 
 
 }

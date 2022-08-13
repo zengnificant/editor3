@@ -8,7 +8,7 @@
             "text": "t t",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {
                     "color": "red",
                     "fontSize": 20
@@ -18,7 +18,7 @@
                 "baseType": 0
             },
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "a",
@@ -35,7 +35,7 @@
             "text": "行内块",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "span",
@@ -46,7 +46,7 @@
             "text": "nice",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {
                     "color": "green",
                     "fontSize": 30
@@ -60,7 +60,7 @@
             "text": "行内",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "u",
@@ -76,7 +76,7 @@
             "text": "哈哈",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {
                     "color": "red",
                     "fontSize": 20
@@ -86,7 +86,7 @@
                 "baseType": 0
             },
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "a",
@@ -98,14 +98,14 @@
             "text": "t2",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "span",
                 "baseType": 0
             },
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "a",
@@ -122,7 +122,7 @@
             "text": "我很饿",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "span",
@@ -138,7 +138,7 @@
             "text": "我",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "span",
@@ -149,7 +149,7 @@
             "text": "",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "img",
@@ -157,7 +157,7 @@
                 "baseType": 1
             },
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "span",
@@ -173,7 +173,7 @@
             "text": "我爱理",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "span",
@@ -189,7 +189,7 @@
             "text": "爱理",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "span",
@@ -205,7 +205,7 @@
             "text": "爱理",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "span",
@@ -221,7 +221,7 @@
             "text": "爱理",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "span",
@@ -237,7 +237,7 @@
             "text": "爱理",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "span",
@@ -253,7 +253,7 @@
             "text": "爱理",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "span",
@@ -269,7 +269,7 @@
             "text": "爱理",
             "decoratorTree": [
             {
-                "inlineStyles":
+                "inlineStyle":
                 {},
                 "className": [],
                 "tag": "span",

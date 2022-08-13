@@ -1,7 +1,7 @@
 import React, { Component, Fragment, createRef, useRef, useState, useEffect } from 'react'
 
 import decorator from '@components/Editor/decorator.js'
-import addLink from '@src/control/addLink.js'
+import addInlineStyle from '@src/control/addInlineStyle.js'
 import styled from 'styled-components'
 
 const Styled = styled.div `
@@ -10,13 +10,13 @@ const Styled = styled.div `
 `
 class App extends Component {
     onClick = (e) => {
-        addLink(this.props.getState(), { href: 'sko' })
+        addInlineStyle(this.props.getState(), { fontStyle: 'italic' })
     }
 
     render() {
 
         return <Styled onClick={this.onClick}>
-             添加链接
+             i(变斜体)
         </Styled>
     }
 

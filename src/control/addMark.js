@@ -43,7 +43,6 @@ const addMarkForMeta = (meta, mark, opts) => {
         let newOne = findOne.merge(decorator)
         return meta.set('decoratorTree', decoratorTree.set(index, newOne))
     }
-
     return meta.set('decoratorTree', decoratorTree.push(decorator))
 }
 

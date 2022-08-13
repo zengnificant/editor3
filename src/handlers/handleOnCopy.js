@@ -12,7 +12,6 @@ const handleOnCopy = (e, state) => {
     const text = fragment.getText()
     e.clipboardData.setData('text/html', html)
     e.clipboardData.setData('text/plain', text)
-    console.log("已复制")
 
 }
 

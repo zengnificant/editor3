@@ -17,9 +17,8 @@ const normalize = (content) => {
         if (!beforeBlock) {
             return false;
         }
-        console.log(isNormalDepth(beforeBlock, block), beforeBlock, block)
 
-        return isNormalDepth(beforeBlock, block)
+        return isSameTypeTag(beforeBlock, block)
     }
 
     const filterblocks = splitList(blocks, block => !condition(block))
@@ -34,7 +33,7 @@ const normalize = (content) => {
         const retBlocks = ret1.takeWhile((b, index) => {
             if (index === 0) return true;
             const lastB = ret1.get(index - 1)
-            return isNormalDepth(lastB, b)
+            return isSameTypeTag(lastB, b)
         })
         const firstBDepth = retBlocks.get(0).getDepth()
         return retBlocks.map(b => {
@@ -56,14 +55,6 @@ function isSameTypeTag(a, b) {
     return !!sameTypeOfBlocks.find(arr => {
         return Array.isArray(arr) && arr.includes(tagA) && arr.includes(tagB)
     })
-}
-
-function isNormalDepth(a, b) {
-    if (!isSameTypeTag(a, b)) return false;
-    const depthA = a.getDepth()
-    const depthB = b.getDepth()
-    if (depthB - depthA <= 1) return true;
-    return false;
 }
 
 

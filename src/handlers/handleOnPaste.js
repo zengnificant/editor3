@@ -1,7 +1,6 @@
 import { insertText } from '@src/transaction/insertText.js'
 import insertFragmentIntoContent from '@src/transaction/insertFragmentIntoContent.js'
 import { convertFromHTML } from '@convert/convertFromHTML.js'
-import { convertToHTML } from '@convert/convertToHTML.js'
 
 function handleOnPaste(e, state) {
     e.preventDefault()

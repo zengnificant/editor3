@@ -1,7 +1,6 @@
-import removeMark from '@src/control/removeMark.js'
-
+import removeMark2 from '@src/control/removeMark2.js'
 const removeLink = (state) => {
-    return removeMark(state, 'a')
+    return removeMark2(state, 'a')
 }
 
 

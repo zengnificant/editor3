@@ -26,9 +26,9 @@ const getDecoratorTree = (content, sel) => {
 
 
 
-export const insertTextOnCollapse = (content, sel, text, inlineStyles) => {
+export const insertTextOnCollapse = (content, sel, text, inlineStyle) => {
 
-    inlineStyles = OrderedMap(inlineStyles)
+    inlineStyle = OrderedMap(inlineStyle)
     const isBackward = sel.getIsBackward()
     const { start, startKey } = sel
     const block = content.getBlockForKey(startKey)
@@ -38,7 +38,7 @@ export const insertTextOnCollapse = (content, sel, text, inlineStyles) => {
     let list = List(text.match(/./usg)).map(text => {
         let meta = Meta.create({ text, decoratorTree })
         const { decorator } = meta
-        return meta.setIn(['decoratorTree', 0], decorator.set('inlineStyles', decorator.getInlineStyles().merge(inlineStyles)))
+        return meta.setIn(['decoratorTree', 0], decorator.set('inlineStyle', decorator.getInlineStyle().merge(inlineStyle)))
     })
 
     const getlist = (list) => {
@@ -49,18 +49,18 @@ export const insertTextOnCollapse = (content, sel, text, inlineStyles) => {
     const block2 = block.set('list', getlist(list).filter(e => !e.isEmpty()))
     return { content: content.updateBlock(block2), selection: sel.merge({ a: start + list.size, b: start + list.size }) }
 }
-export const insertTextOnRange = (con, sel, text, inlineStyles) => {
+export const insertTextOnRange = (con, sel, text, inlineStyle) => {
     let { content, selection } = backspaceOnRange(con, sel)
-    return insertTextOnCollapse(content, selection.set('isBackward', false), text, inlineStyles)
+    return insertTextOnCollapse(content, selection.set('isBackward', false), text, inlineStyle)
 }
 
 
 
 
-export const insertText = (content, sel, text, inlineStyles) => {
+export const insertText = (content, sel, text, inlineStyle) => {
     const { isCollapsed } = sel
     if (isCollapsed) {
-        return insertTextOnCollapse(content, sel, text, inlineStyles)
+        return insertTextOnCollapse(content, sel, text, inlineStyle)
     }
-    return insertTextOnRange(content, sel, text, inlineStyles)
+    return insertTextOnRange(content, sel, text, inlineStyle)
 }

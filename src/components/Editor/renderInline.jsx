@@ -23,11 +23,11 @@ const getIndexData = (index) => {
 
 function renderChangedInline(inline, k) {
     const decorator = inline.get('decorator').toJS()
-    const { baseType, tag, inlineStyles, className: classNameList, ...data } = decorator
+    const { baseType, tag, inlineStyle, className: classNameList, ...data } = decorator
 
     const Tag = tag
     const className = classNameList.join(' ')
-    const style = inlineStyles
+    const style = inlineStyle
     const El = props => <Tag className={className}  style={style} {...data} {...props}/>
     const children = inline.get('children')
 

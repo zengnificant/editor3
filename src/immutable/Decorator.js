@@ -2,7 +2,7 @@ import { Map, OrderedSet, OrderedMap, fromJS } from 'immutable'
 import { StupidRecord } from '@nifi/helpers/StupidRecord.js'
 import { isString, isObject } from '@nifi/utils/isTypeUtils.js'
 const defaultRecord = {
-    inlineStyles: OrderedMap(),
+    inlineStyle: OrderedMap(),
     className: OrderedSet(),
     tag: 'span',
     href: undefined,
@@ -14,9 +14,9 @@ export default class Decorator extends StupidRecord(defaultRecord) {
     static isDecorator(any) {
         const check1 = any instanceof Decorator
         if (!check1) return false;
-        const inlineStyles = any.getInlineStyles()
+        const inlineStyle = any.getInlineStyle()
         const className = any.getClassName()
-        const check2 = OrderedMap.isOrderedMap(inlineStyles) && OrderedSet.isOrderedSet(className)
+        const check2 = OrderedMap.isOrderedMap(inlineStyle) && OrderedSet.isOrderedSet(className)
         return check2;
     }
 
@@ -27,9 +27,9 @@ export default class Decorator extends StupidRecord(defaultRecord) {
     static create(any) {
 
         let ret = new Decorator(any)
-        const inlineStyles = ret.getInlineStyles()
-        if (!OrderedMap.isOrderedMap(inlineStyles)) {
-            ret = ret.set('inlineStyles', OrderedMap(inlineStyles))
+        const inlineStyle = ret.getInlineStyle()
+        if (!OrderedMap.isOrderedMap(inlineStyle)) {
+            ret = ret.set('inlineStyle', OrderedMap(inlineStyle))
         }
         const className = ret.getClassName()
         if (!OrderedSet.isOrderedSet(className)) {
